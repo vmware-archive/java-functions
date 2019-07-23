@@ -15,5 +15,6 @@
   	<modules>
 		<module>splitter-function</module>
 		<module>jdbc-supplier</module>
+		<module>rabbit-consumer</module>
 	</modules>
 </project>

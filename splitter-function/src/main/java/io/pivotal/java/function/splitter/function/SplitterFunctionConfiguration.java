@@ -19,8 +19,9 @@ package io.pivotal.java.function.splitter.function;
 import java.nio.charset.Charset;
 import java.util.function.Function;
 
-import org.reactivestreams.Publisher;
 
+import org.reactivestreams.Publisher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -43,11 +44,8 @@ import reactor.core.publisher.Flux;
 @EnableConfigurationProperties(SplitterFunctionProperties.class)
 public class SplitterFunctionConfiguration {
 
-	private final SplitterFunctionProperties splitterFunctionProperties;
-
-	public SplitterFunctionConfiguration(SplitterFunctionProperties splitterFunctionProperties) {
-		this.splitterFunctionProperties = splitterFunctionProperties;
-	}
+	@Autowired
+	SplitterFunctionProperties splitterFunctionProperties;
 
 	@Bean
 	public Function<Message<?>, Flux<Message<?>>> splitterFunction(AbstractMessageSplitter messageSplitter) {

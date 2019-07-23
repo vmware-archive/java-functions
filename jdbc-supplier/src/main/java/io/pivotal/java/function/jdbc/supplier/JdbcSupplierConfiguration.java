@@ -20,10 +20,12 @@ import java.util.function.Supplier;
 
 import javax.sql.DataSource;
 
+import io.pivotal.java.function.splitter.function.SplitterFunctionConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.integration.core.MessageSource;
 import org.springframework.integration.jdbc.JdbcPollingChannelAdapter;
 import org.springframework.messaging.Message;
@@ -31,6 +33,7 @@ import reactor.core.publisher.Flux;
 
 @Configuration
 @EnableConfigurationProperties(JdbcSupplierProperties.class)
+@Import(SplitterFunctionConfiguration.class)
 public class JdbcSupplierConfiguration {
 
 	@Autowired
