@@ -19,9 +19,7 @@ package io.pivotal.java.function.splitter.function;
 import java.nio.charset.Charset;
 import java.util.function.Function;
 
-
 import org.reactivestreams.Publisher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -37,22 +35,20 @@ import org.springframework.integration.splitter.DefaultMessageSplitter;
 import org.springframework.integration.splitter.ExpressionEvaluatingSplitter;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-
 import reactor.core.publisher.Flux;
 
 @Configuration
 @EnableConfigurationProperties(SplitterFunctionProperties.class)
 public class SplitterFunctionConfiguration {
 
-	@Autowired
-	SplitterFunctionProperties splitterFunctionProperties;
-
 	@Bean
-	public Function<Message<?>, Flux<Message<?>>> splitterFunction(AbstractMessageSplitter messageSplitter) {
-		messageSplitter.setApplySequence(this.splitterFunctionProperties.isApplySequence());
+	public Function<Message<?>, Flux<Message<?>>> splitterFunction(AbstractMessageSplitter messageSplitter, SplitterFunctionProperties splitterFunctionProperties) {
+		System.out.println("foobar....");
+		messageSplitter.setApplySequence(splitterFunctionProperties.isApplySequence());
 		ThreadLocalFluxSinkMessageChannel outputChannel = new ThreadLocalFluxSinkMessageChannel();
 		messageSplitter.setOutputChannel(outputChannel);
 		return message -> {
+			System.out.println("Got the messge: " + message);
 			messageSplitter.handleMessage(message);
 			return outputChannel.publisherThreadLocal.get();
 		};
@@ -60,22 +56,22 @@ public class SplitterFunctionConfiguration {
 
 	@Bean
 	@ConditionalOnProperty(prefix = "splitter", name = "expression")
-	public AbstractMessageSplitter expressionSplitter() {
+	public AbstractMessageSplitter expressionSplitter(SplitterFunctionProperties splitterFunctionProperties) {
 		return new ExpressionEvaluatingSplitter(
 				new SpelExpressionParser()
-						.parseExpression(this.splitterFunctionProperties.getExpression()));
+						.parseExpression(splitterFunctionProperties.getExpression()));
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	@Conditional(FileSplitterCondition.class)
-	public AbstractMessageSplitter fileSplitter() {
-		Boolean markers = this.splitterFunctionProperties.getFileMarkers();
-		String charset = this.splitterFunctionProperties.getCharset();
+	public AbstractMessageSplitter fileSplitter(SplitterFunctionProperties splitterFunctionProperties) {
+		Boolean markers = splitterFunctionProperties.getFileMarkers();
+		String charset = splitterFunctionProperties.getCharset();
 		if (markers == null) {
 			markers = false;
 		}
-		FileSplitter fileSplitter = new FileSplitter(true, markers, this.splitterFunctionProperties.getMarkersJson());
+		FileSplitter fileSplitter = new FileSplitter(true, markers, splitterFunctionProperties.getMarkersJson());
 		if (charset != null) {
 			fileSplitter.setCharset(Charset.forName(charset));
 		}
@@ -85,9 +81,9 @@ public class SplitterFunctionConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public AbstractMessageSplitter defaultSplitter() {
+	public AbstractMessageSplitter defaultSplitter(SplitterFunctionProperties splitterFunctionProperties) {
 		DefaultMessageSplitter defaultMessageSplitter = new DefaultMessageSplitter();
-		defaultMessageSplitter.setDelimiters(this.splitterFunctionProperties.getDelimiters());
+		defaultMessageSplitter.setDelimiters(splitterFunctionProperties.getDelimiters());
 		return defaultMessageSplitter;
 	}
 
