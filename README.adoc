@@ -1,0 +1,28 @@
+== Standalone Java Functions
+
+These are self contained Java functions that can be used in a variety of environemtns such as Spring Cloud Data Flow, Project RIFF etc.
+The functions can be run as part of standalone Spring Boot applications.
+
+=== Building
+
+Go to the root of the repo:
+
+`./mvnw clean package`
+
+Or go to the relevant function that you are interested in and then do:
+
+`./mvnw clean package`
+
+=== Available Functions
+
+`jdbc-supplier`
+
+TODO: provide a description
+
+`rabbit-consumer`
+
+TODO: provide a description
+
+`splitter-function`
+
+TODO: provide a description
