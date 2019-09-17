@@ -42,13 +42,13 @@ import reactor.core.publisher.Flux;
 public class SplitterFunctionConfiguration {
 
 	@Bean
-	public Function<Message<?>, Flux<Message<?>>> splitterFunction(AbstractMessageSplitter messageSplitter, SplitterFunctionProperties splitterFunctionProperties) {
-		System.out.println("foobar....");
+	public Function<Message<?>, Flux<Message<?>>> splitterFunction(AbstractMessageSplitter messageSplitter,
+			SplitterFunctionProperties splitterFunctionProperties) {
+
 		messageSplitter.setApplySequence(splitterFunctionProperties.isApplySequence());
 		ThreadLocalFluxSinkMessageChannel outputChannel = new ThreadLocalFluxSinkMessageChannel();
 		messageSplitter.setOutputChannel(outputChannel);
 		return message -> {
-			System.out.println("Got the messge: " + message);
 			messageSplitter.handleMessage(message);
 			return outputChannel.publisherThreadLocal.get();
 		};
@@ -90,7 +90,7 @@ public class SplitterFunctionConfiguration {
 	static class FileSplitterCondition extends AnyNestedCondition {
 
 		FileSplitterCondition() {
-			super(ConfigurationPhase.PARSE_CONFIGURATION);
+			super(ConfigurationPhase.REGISTER_BEAN);
 		}
 
 		@ConditionalOnProperty(prefix = "splitter", name = "charset")
