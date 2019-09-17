@@ -41,9 +41,9 @@ public class JdbcSupplierProperties {
 	private boolean split = true;
 
 	/**
-	 * Max numbers of rows to process for each poll.
+	 * Max numbers of rows to process for query.
 	 */
-	private int maxRowsPerPoll = 0;
+	private int maxRows = 0;
 
 	@NotNull
 	public String getQuery() {
@@ -70,11 +70,11 @@ public class JdbcSupplierProperties {
 		this.split = split;
 	}
 
-	public int getMaxRowsPerPoll() {
-		return maxRowsPerPoll;
+	public int getMaxRows() {
+		return maxRows;
 	}
 
-	public void setMaxRowsPerPoll(int maxRowsPerPoll) {
-		this.maxRowsPerPoll = maxRowsPerPoll;
+	public void setMaxRows(int maxRows) {
+		this.maxRows = maxRows;
 	}
 }

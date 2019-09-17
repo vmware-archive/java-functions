@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.pivotal.java.function.jdbc.supplier;
 
 import java.util.function.Function;
@@ -20,15 +21,17 @@ import java.util.function.Supplier;
 
 import javax.sql.DataSource;
 
-import io.pivotal.java.function.splitter.function.SplitterFunctionConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.function.context.PollableSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.core.MessageSource;
 import org.springframework.integration.jdbc.JdbcPollingChannelAdapter;
 import org.springframework.messaging.Message;
+
+import io.pivotal.java.function.splitter.function.SplitterFunctionConfiguration;
 import reactor.core.publisher.Flux;
 
 @Configuration
@@ -36,33 +39,43 @@ import reactor.core.publisher.Flux;
 @Import(SplitterFunctionConfiguration.class)
 public class JdbcSupplierConfiguration {
 
-	@Autowired
-	JdbcSupplierProperties properties;
+	private final JdbcSupplierProperties properties;
 
-	@Autowired
-	private DataSource dataSource;
+	private final DataSource dataSource;
 
-	@Autowired
-	private Function<Message<?>, Flux<Message<?>>> splitterFunction;
+	public JdbcSupplierConfiguration(JdbcSupplierProperties properties, DataSource dataSource) {
+		this.properties = properties;
+		this.dataSource = dataSource;
+	}
 
 	@Bean
 	public MessageSource<Object> jdbcMessageSource() {
 		JdbcPollingChannelAdapter jdbcPollingChannelAdapter =
 				new JdbcPollingChannelAdapter(this.dataSource, this.properties.getQuery());
-		jdbcPollingChannelAdapter.setMaxRowsPerPoll(this.properties.getMaxRowsPerPoll());
+		jdbcPollingChannelAdapter.setMaxRows(this.properties.getMaxRows());
 		jdbcPollingChannelAdapter.setUpdateSql(this.properties.getUpdate());
 		return jdbcPollingChannelAdapter;
 	}
 
-	@Bean
-	public Supplier<Message<?>> get() {
+	@Bean(name = "jdbcSupplier")
+	@PollableSupplier(splittable = true)
+	@ConditionalOnProperty(prefix = "jdbc", name = "split", matchIfMissing = true)
+	public Supplier<Flux<Message<?>>> splittedSupplier(Function<Message<?>, Flux<Message<?>>> splitterFunction) {
 		return () -> {
-			final Message<?> received = jdbcMessageSource().receive();
-			System.out.println("Data received from JDBC Source: " + received);
-			if (properties.isSplit()) {
-				splitterFunction.apply(received);
+			Message<?> received = jdbcMessageSource().receive();
+			if (received != null) {
+				return splitterFunction.apply(received); // multiple Message<Map<String, Object>>
 			}
-			return received;
+			else {
+				return Flux.empty();
+			}
 		};
 	}
+
+	@Bean
+	@ConditionalOnProperty(prefix = "jdbc", name = "split", havingValue = "false")
+	public Supplier<Message<?>> jdbcSupplier() {
+		return () -> jdbcMessageSource().receive();
+	}
+
 }

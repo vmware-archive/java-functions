@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<splitter.version>1.0.0.BUILD-SNAPSHOT</splitter.version>
+		<spring-cloud-stream.version>3.0.0.BUILD-SNAPSHOT</spring-cloud-stream.version>
 	</properties>
 
 	<dependencyManagement>
@@ -60,6 +61,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream</artifactId>
+			<version>${spring-cloud-stream.version}</version>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
