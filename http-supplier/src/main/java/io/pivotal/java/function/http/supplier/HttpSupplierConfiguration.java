@@ -30,6 +30,7 @@ import org.springframework.integration.expression.ValueExpression;
 import org.springframework.integration.http.support.DefaultHttpHeaderMapper;
 import org.springframework.integration.mapping.HeaderMapper;
 import org.springframework.integration.webflux.dsl.WebFlux;
+import org.springframework.integration.webflux.inbound.WebFluxInboundEndpoint;
 import org.springframework.messaging.Message;
 
 import reactor.core.publisher.Flux;
@@ -53,7 +54,8 @@ public class HttpSupplierConfiguration {
 						.crossOrigin(crossOrigin ->
 								crossOrigin.origin(httpSourceProperties.getCors().getAllowedOrigins())
 										.allowedHeaders(httpSourceProperties.getCors().getAllowedHeaders())
-										.allowCredentials(httpSourceProperties.getCors().getAllowCredentials())))
+										.allowCredentials(httpSourceProperties.getCors().getAllowCredentials()))
+						.autoStartup(false))
 				.toReactivePublisher();
 	}
 
@@ -63,8 +65,13 @@ public class HttpSupplierConfiguration {
 	}
 
 	@Bean
-	public Supplier<Flux<Message<byte[]>>> httpSupplier(Publisher<Message<byte[]>> httpRequestPublisher) {
-		return () -> Flux.from(httpRequestPublisher);
+	public Supplier<Flux<Message<byte[]>>> httpSupplier(
+			Publisher<Message<byte[]>> httpRequestPublisher,
+			WebFluxInboundEndpoint webFluxInboundEndpoint) {
+
+		return () -> Flux.from(httpRequestPublisher)
+				.doOnSubscribe((subscription) -> webFluxInboundEndpoint.start())
+				.doOnTerminate(webFluxInboundEndpoint::stop);
 	}
 
 }
