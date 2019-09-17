@@ -1,6 +1,6 @@
 == Standalone Java Functions
 
-These are self contained Java functions that can be used in a variety of environemtns such as Spring Cloud Data Flow, Project RIFF etc.
+These are self contained Java functions that can be used in a variety of environments such as Spring Cloud Data Flow, Project RIFF etc.
 The functions can be run as part of standalone Spring Boot applications.
 
 === Building
@@ -15,10 +15,17 @@ Or go to the relevant function that you are interested in and then do:
 
 === Available Functions
 
+
 `cassandra-consumer`
 
 A `Function<Object, Mono<? extends WriteResult>>` consumer to perform an `INSERT` or `UPDATE` operation in the Cassandra according provided `cassandra`, `cassandra.cluster` and `spring.data.cassandra` configuration properties.
 An operation is performed in a reactive manner, so the returned `Mono` can be combined with some other post-function or subscribed directly in the target application.
+
+`http-supplier`
+
+The `http-supplier` provides an `Supplier<Flux<Message<byte[]>>>` bean with the `httpSupplier` name.
+The `Flux` returned by this supplier is built on top of Spring Integration reactive streams support and WebFlux Inbound Channel Adapter.
+The `HttpSourceProperties` exposes configuration properties for this supplier bean.
 
 `jdbc-supplier`
 
