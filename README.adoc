@@ -15,6 +15,11 @@ Or go to the relevant function that you are interested in and then do:
 
 === Available Functions
 
+`cassandra-consumer`
+
+A `Function<Object, Mono<? extends WriteResult>>` consumer to perform an `INSERT` or `UPDATE` operation in the Cassandra according provided `cassandra`, `cassandra.cluster` and `spring.data.cassandra` configuration properties.
+An operation is performed in a reactive manner, so the returned `Mono` can be combined with some other post-function or subscribed directly in the target application.
+
 `jdbc-supplier`
 
 TODO: provide a description
