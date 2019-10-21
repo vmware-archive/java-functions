@@ -62,17 +62,10 @@ public class CassandraConsumerConfiguration {
 	@Autowired
 	private CassandraConsumerProperties cassandraSinkProperties;
 
-	// TODO Fix reactive return discovery in the GatewayProxyFactoryBean
-	@Bean
-	@DependsOn("cassandraConsumerFlow")
-	public Function<Object, Mono<? extends WriteResult>> cassandraConsumer(CassandraConsumerGateway gateway) {
-		return gateway::sendToCassandra;
-	}
-
 	@Bean
 	public IntegrationFlow cassandraConsumerFlow(MessageHandler cassandraSinkMessageHandler) {
 		IntegrationFlowBuilder integrationFlowBuilder =
-				IntegrationFlows.from(CassandraConsumerGateway.class);
+				IntegrationFlows.from(CassandraConsumerFunction.class);
 		if (StringUtils.hasText(this.cassandraSinkProperties.getIngestQuery())) {
 			integrationFlowBuilder.transform(
 					new PayloadToMatrixTransformer(this.cassandraSinkProperties.getIngestQuery(),
@@ -206,9 +199,7 @@ public class CassandraConsumerConfiguration {
 
 	}
 
-	interface CassandraConsumerGateway {
-
-		Mono<? extends WriteResult> sendToCassandra(Object payload);
+	interface CassandraConsumerFunction extends Function<Object, Mono<? extends WriteResult>> {
 
 	}
 
