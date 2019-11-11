@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2018 Pivotal Software Inc, All Rights Reserved.
+ * Copyright (c) 2011-2019 Pivotal Software Inc, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,7 +107,7 @@ public class SplitterFunctionConfiguration {
 		private final ThreadLocal<Flux<Message<?>>> publisherThreadLocal = new ThreadLocal<>();
 
 		@Override
-		public void subscribeTo(Publisher<Message<?>> publisher) {
+		public void subscribeTo(Publisher<? extends Message<?>> publisher) {
 			this.publisherThreadLocal.set(Flux.from(publisher));
 		}
 

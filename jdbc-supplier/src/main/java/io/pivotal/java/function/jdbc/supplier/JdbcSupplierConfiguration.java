@@ -16,22 +16,19 @@
 
 package io.pivotal.java.function.jdbc.supplier;
 
+import io.pivotal.java.function.splitter.function.SplitterFunctionConfiguration;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
 import javax.sql.DataSource;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.function.context.PollableSupplier;
+import org.springframework.cloud.function.context.PollableBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.core.MessageSource;
 import org.springframework.integration.jdbc.JdbcPollingChannelAdapter;
 import org.springframework.messaging.Message;
-
-import io.pivotal.java.function.splitter.function.SplitterFunctionConfiguration;
 import reactor.core.publisher.Flux;
 
 @Configuration
@@ -58,7 +55,7 @@ public class JdbcSupplierConfiguration {
 	}
 
 	@Bean(name = "jdbcSupplier")
-	@PollableSupplier(splittable = true)
+	@PollableBean(splittable = true)
 	@ConditionalOnProperty(prefix = "jdbc", name = "split", matchIfMissing = true)
 	public Supplier<Flux<Message<?>>> splittedSupplier(Function<Message<?>, Flux<Message<?>>> splitterFunction) {
 		return () -> {
