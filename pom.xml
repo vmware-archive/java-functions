@@ -17,6 +17,7 @@
 		<module>splitter-function</module>
 		<module>http-supplier</module>
 		<module>jdbc-supplier</module>
+		<module>mongodb-supplier</module>
 		<module>rabbit-consumer</module>
 	</modules>
 </project>
