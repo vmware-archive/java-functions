@@ -1,0 +1,22 @@
+== Standalone Java Suppliers
+
+These are self contained Java functions, each implements `java.util.function.Supplier` and can be used as a component that supplies an output value in a variety of streaming application platforms such as Spring Cloud Data Flow, Project RIFF etc.
+The functions can be run as part of standalone Spring Boot applications.
+
+=== Available Suppliers
+
+`http-supplier`
+
+The `http-supplier` provides an `Supplier<Flux<Message<byte[]>>>` bean with the `httpSupplier` name.
+The `Flux` returned by this supplier is built on top of Spring Integration reactive streams support and WebFlux Inbound Channel Adapter.
+The `HttpSourceProperties` exposes configuration properties for this supplier bean.
+
+`jdbc-supplier`
+
+TODO: provide a description
+
+`mongodb-supplier`
+The `mongodb-supplier` conditionally provides an `Supplier<Flux<Message<?>>>` bean, if `mongodb.split` is `true`, or a `Supplier<Message<?>>` bean otherwise.
+The function bean is named `mongodbSupplier` in either case.
+The `MongodbSupplierProperties` exposes configuration properties for this Supplier bean.
+

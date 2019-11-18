@@ -1,0 +1,10 @@
+== Standalone Java Functions
+
+These are self contained Java functions, each implements `java.util.function.Function` and can be used as a component that provides a value for a given input value in a variety of streaming application platforms such as Spring Cloud Data Flow, Project RIFF etc.
+The functions can be run as part of standalone Spring Boot applications.
+
+=== Available Functions
+
+`splitter-function`
+
+TODO: provide a description
