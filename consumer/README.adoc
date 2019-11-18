@@ -1,0 +1,15 @@
+== Standalone Java Consumers
+
+These are self contained Java functions, each implements `java.util.function.Consumer` and can be used as a component that consumes a value in a variety of streaming application platforms such as Spring Cloud Data Flow, Project RIFF etc.
+The functions can be run as part of standalone Spring Boot applications.
+
+=== Available Consumers
+
+`cassandra-consumer`
+
+A `Function<Object, Mono<? extends WriteResult>>` consumer to perform an `INSERT` or `UPDATE` operation in the Cassandra according provided `cassandra`, `cassandra.cluster` and `spring.data.cassandra` configuration properties.
+An operation is performed in a reactive manner, so the returned `Mono` can be combined with some other post-function or subscribed directly in the target application.
+
+`rabbit-consumer`
+
+TODO: provide a description

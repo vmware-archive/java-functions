@@ -1,45 +1,34 @@
 == Standalone Java Functions
 
-These are self contained Java functions that can be used in a variety of environments such as Spring Cloud Data Flow, Project RIFF etc.
+These are self contained Java functions that can be used in a variety streaming application platforms such as Spring Cloud Data Flow, Project RIFF etc.
 The functions can be run as part of standalone Spring Boot applications.
 
 === Building
 
 Go to the root of the repo:
 
-`./mvnw clean package`
+```bash
+./mvnw clean package
+```
 
 Or go to the relevant function that you are interested in and then do:
 
-`./mvnw clean package`
+```bash
+./mvnw clean package
+```
 
 === Available Functions
 
+Functions are grouped by the functional interface they implement.  Details are included in the following pages.
 
-`cassandra-consumer`
+- *java.util.function.Consumer*
+* link:consumer/README.adoc[Consumers]
+- *java.util.function.Function*
+* link:function/README.adoc[Functions]
+- *java.util.function.Supplier*
+* link:supplier/README.adoc[Suppliers]
 
-A `Function<Object, Mono<? extends WriteResult>>` consumer to perform an `INSERT` or `UPDATE` operation in the Cassandra according provided `cassandra`, `cassandra.cluster` and `spring.data.cassandra` configuration properties.
-An operation is performed in a reactive manner, so the returned `Mono` can be combined with some other post-function or subscribed directly in the target application.
 
-`http-supplier`
 
-The `http-supplier` provides an `Supplier<Flux<Message<byte[]>>>` bean with the `httpSupplier` name.
-The `Flux` returned by this supplier is built on top of Spring Integration reactive streams support and WebFlux Inbound Channel Adapter.
-The `HttpSourceProperties` exposes configuration properties for this supplier bean.
 
-`jdbc-supplier`
 
-TODO: provide a description
-
-`mongodb-supplier`
-The `mongodb-supplier` conditionally provides an `Supplier<Flux<Message<?>>>` bean, if `mongodb.split` is `true`, or a `Supplier<Message<?>>` bean otherwise.
-The function bean is named `mongodbSupplier` in either case.
-The `MongodbSupplierProperties` exposes configuration properties for this Supplier bean.
-
-`rabbit-consumer`
-
-TODO: provide a description
-
-`splitter-function`
-
-TODO: provide a description
