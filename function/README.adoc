@@ -8,3 +8,44 @@ The functions can be run as part of standalone Spring Boot applications.
 `splitter-function`
 
 TODO: provide a description
+
+`tasklauncher-function`
+
+This function launches a registered task application using the Data Flow Server https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#api-guide-resources-task-executions-launching[REST API].
+
+The function implements `Function<LaunchRequest, Optional<Long>>`.  The input `LaunchRequest` is value object containing:
+
+* the task name (required and usually registered as a task with the target Data Flow Server)
+* deployment properties (a map of key value pairs, optional).
+* program arguments for the task (a list, optional).
+
+The output is an `Optional` containing the id of the task, created by the Data Flow Server for tracking purposes, if the launch request is successfully submitted.
+If the Task platform is running at full capacity, the request will not be submitted and an empty value will be returned.
+
+=== Options
+
+The **$$tasklauncher-dataflow$$** $$sink$$ supports the following configuration properties:
+
+//tag::configuration-properties[]
+$$dataflow-server-access-token$$:: $$OAuth2 Access Token.$$ *($$String$$, default: `$$<none>$$`)*
+$$oauth2-client-credentials-client-id$$:: $$The OAuth2 Client Id (Used for the client credentials grant).$$ *($$String$$, default: `$$<none>$$`)*
+$$oauth2-client-credentials-client-secret$$:: $$The OAuth2 Client Secret (Used for the client credentials grant).$$ *($$String$$, default: `$$<none>$$`)*
+$$oauth2-client-credentials-scopes$$:: $$OAuth2 Authorization scopes (Used for the client credentials grant).$$ *($$Set<String>$$, default: `$$<none>$$`)*
+$$oauth2-client-credentials-token-uri$$:: $$Token URI for the OAuth2 provider (Used for the client credentials grant).$$ *($$String$$, default: `$$<none>$$`)*
+$$platform-name$$:: $$The Spring Cloud Data Flow platform to use for launching tasks.$$ *($$String$$, default: `$$default$$`)*
+$$spring.cloud.dataflow.client.authentication.basic.password$$:: $$The login password.$$ *($$String$$, default: `$$<none>$$`)*
+$$spring.cloud.dataflow.client.authentication.basic.username$$:: $$The login username.$$ *($$String$$, default: `$$<none>$$`)*
+$$spring.cloud.dataflow.client.enable-dsl$$:: $$Enable Data Flow DSL access.$$ *($$Boolean$$, default: `$$false$$`)*
+$$spring.cloud.dataflow.client.server-uri$$:: $$The Data Flow server URI.$$ *($$String$$, default: `$$http://localhost:9393$$`)*
+$$spring.cloud.dataflow.client.skip-ssl-validation$$:: $$Skip Ssl validation.$$ *($$Boolean$$, default: `$$true$$`)*
+$$trigger.initial-delay$$:: $$The initial delay in milliseconds.$$ *($$Integer$$, default: `$$1000$$`)*
+$$trigger.max-period$$:: $$The maximum polling period in milliseconds. Will be set to period if period > maxPeriod.$$ *($$Integer$$, default: `$$30000$$`)*
+$$trigger.period$$:: $$The polling period in milliseconds.$$ *($$Integer$$, default: `$$1000$$`)*
+//end::configuration-properties[]
+
+The Data Flow server may be configured to launch tasks on multiple platforms.
+Each function instance is configured for a single platform, given by the `platformName` property (`default` if not specified).
+The task launcher will set the required deployment property `spring.cloud.dataflow.task.platformName` if the request does not provide it.
+
+NOTE: If the request includes the deployment property `spring.cloud.dataflow.task.platformName`, and the value is not the same as the tasklauncher's `platformName`, the request will not be submitted and an exception will be thrown.
+

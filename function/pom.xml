@@ -15,5 +15,6 @@
 <!-- in alphabetical order --> 
   	<modules>
 		<module>splitter-function</module>
+		<module>tasklauncher-function</module>
 	</modules>
 </project>
