@@ -44,10 +44,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = TaslLauncherFunctionTests.TestConfig.class, properties = {
+@SpringBootTest(classes = TaskLauncherFunctionTests.TestConfig.class, properties = {
 		"spring.main.allow-bean-definition-overriding=true"
 })
-public class TaslLauncherFunctionTests {
+public class TaskLauncherFunctionTests {
 
 	@Autowired
 	private TaskLauncherFunction taskLauncherFunction;
