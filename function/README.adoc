@@ -38,9 +38,6 @@ $$spring.cloud.dataflow.client.authentication.basic.username$$:: $$The login use
 $$spring.cloud.dataflow.client.enable-dsl$$:: $$Enable Data Flow DSL access.$$ *($$Boolean$$, default: `$$false$$`)*
 $$spring.cloud.dataflow.client.server-uri$$:: $$The Data Flow server URI.$$ *($$String$$, default: `$$http://localhost:9393$$`)*
 $$spring.cloud.dataflow.client.skip-ssl-validation$$:: $$Skip Ssl validation.$$ *($$Boolean$$, default: `$$true$$`)*
-$$trigger.initial-delay$$:: $$The initial delay in milliseconds.$$ *($$Integer$$, default: `$$1000$$`)*
-$$trigger.max-period$$:: $$The maximum polling period in milliseconds. Will be set to period if period > maxPeriod.$$ *($$Integer$$, default: `$$30000$$`)*
-$$trigger.period$$:: $$The polling period in milliseconds.$$ *($$Integer$$, default: `$$1000$$`)*
 //end::configuration-properties[]
 
 The Data Flow server may be configured to launch tasks on multiple platforms.
