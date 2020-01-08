@@ -45,7 +45,7 @@ public class RabbitConsumerConfiguration implements DisposableBean {
 	private CachingConnectionFactory ownConnectionFactory;
 
 	@Bean
-	public Function<Message<?>, Object> sink(@Qualifier("amqpChannelAdapter") MessageHandler messageHandler) {
+	public Function<Message<?>, Object> rabbitConsumer(@Qualifier("amqpChannelAdapter") MessageHandler messageHandler) {
 		return o -> {
 			messageHandler.handleMessage(o);
 			return "Message sent to rabbitmq - check the exchange...";
