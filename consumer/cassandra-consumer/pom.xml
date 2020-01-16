@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>io.pivotal.java.function</groupId>
 	<artifactId>cassandra-consumer</artifactId>
-	<version>0.0.1.BUILD-SNAPSHOT</version>
+	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<name>cassandra-consumer</name>
 	<description>Cassandra Consumer</description>
 
@@ -86,6 +86,19 @@
 							<attach>false</attach>
 							<classifier>exec</classifier>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
 					</execution>
 				</executions>
 			</plugin>

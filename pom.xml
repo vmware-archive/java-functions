@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.pivotal.java.function</groupId>
 	<artifactId>java-functions</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<name>java-functions</name>
 	<description>Pivotal Java Functions</description>
 	<packaging>pom</packaging>
