@@ -17,6 +17,7 @@
 		<module>http-supplier</module>
 		<module>jdbc-supplier</module>
 		<module>mongodb-supplier</module>
+		<module>time-supplier</module>
 	</modules>
 
 	<licenses>

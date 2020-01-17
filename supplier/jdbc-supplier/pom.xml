@@ -10,14 +10,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.0.BUILD-SNAPSHOT</version>
+		<version>2.2.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<java.version>1.8</java.version>
 		<splitter.version>1.0.0.BUILD-SNAPSHOT</splitter.version>
-		<spring-cloud-stream.version>3.0.0.BUILD-SNAPSHOT</spring-cloud-stream.version>
+		<spring-cloud-stream.version>3.0.1.RELEASE</spring-cloud-stream.version>
 	</properties>
 
 	<dependencyManagement>
@@ -25,7 +25,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-function-dependencies</artifactId>
-				<version>3.0.0.BUILD-SNAPSHOT</version>
+				<version>3.0.1.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
