@@ -15,6 +15,7 @@
 <!-- in alphabetical order --> 
   	<modules>
 		<module>cassandra-consumer</module>
+		<module>log-consumer</module>
 		<module>rabbit-consumer</module>
 	</modules>
 

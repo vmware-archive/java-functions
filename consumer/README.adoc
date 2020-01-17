@@ -13,3 +13,11 @@ An operation is performed in a reactive manner, so the returned `Mono` can be co
 `rabbit-consumer`
 
 TODO: provide a description
+
+`log-consumer`
+
+A `Consumer` which accepts incoming messages and logs them using Spring Integration `LoggingHandler` and `LogConsumerProperties` configuration properties.
+If incoming payload is a `byte[]` and `contentType` header is text-compatible, it is converted into a `String`.
+Otherwise the payload is passing to logging as is.
+The Apache `commons-logging` is used as a framework for logging.
+Any logging library which is able to bridge from `commons-logging` can be used as a target logging system.
