@@ -16,11 +16,10 @@
 
 package io.pivotal.java.function.time.supplier;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.function.Supplier;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +33,7 @@ public class TimeSupplierConfiguration {
 
 	@Bean
 	public Supplier<String> timeSupplier(TimeProperties timeProperties) {
-		return () -> new SimpleDateFormat(timeProperties.getDateFormat()).format(new Date());
+		FastDateFormat fastDateFormat = FastDateFormat.getInstance(timeProperties.getDateFormat());
+		return () -> fastDateFormat.format(new Date());
 	}
 }

@@ -16,6 +16,9 @@
 
 package io.pivotal.java.function.time.supplier;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.function.Supplier;
 
 import org.junit.Test;
@@ -31,16 +34,41 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Soby Chacko
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
-public class TimeSupplierApplicationTests {
+public abstract class TimeSupplierApplicationTests {
 
 	@Autowired
-	private Supplier<String> timeSupplier;
+	Supplier<String> timeSupplier;
 
-	@Test
-	public void testSimpleTimeSupplier() {
-		final String time = timeSupplier.get();
-		assertThat(time).isNotNull();
+	@Autowired
+	TimeProperties timeProperties;
+
+	@SpringBootTest
+	public static class SimpleTimeSupplierTest extends TimeSupplierApplicationTests {
+
+		@Test
+		public void testSimpleTimeSupplier() throws Exception {
+			final String time = timeSupplier.get();
+			SimpleDateFormat dateFormat = new SimpleDateFormat(new TimeProperties().getDateFormat());
+			Date date = dateFormat.parse(time);
+			assertThat(date).isNotNull();
+		}
 	}
 
+	@SpringBootTest({ "time.dateFormat=MMddyyyy HH:mm:ss" })
+	public static class VariationToSimpleTest extends TimeSupplierApplicationTests {
+		@Test
+		public void testVariation() throws Exception {
+			final String time = timeSupplier.get();
+			SimpleDateFormat dateFormat = new SimpleDateFormat(timeProperties.getDateFormat());
+			Date date = dateFormat.parse(time);
+			assertThat(date).isNotNull();
+		}
+
+		@Test(expected = IllegalArgumentException.class)
+		public void testInvalidDateFormat() {
+			TimeProperties timeProperties = new TimeProperties();
+			timeProperties.setDateFormat("AA/dd/yyyy HH:mm:ss");
+			new SimpleDateFormat(timeProperties.getDateFormat());
+		}
+	}
 }

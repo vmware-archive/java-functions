@@ -20,3 +20,7 @@ The `mongodb-supplier` conditionally provides an `Supplier<Flux<Message<?>>>` be
 The function bean is named `mongodbSupplier` in either case.
 The `MongodbSupplierProperties` exposes configuration properties for this Supplier bean.
 
+`time-supplier`
+
+The `time-supplier` will simply emit a String with the current time every so often.
+The `TimeSupplierProperties` exposes configuration properties for this supplier bean.

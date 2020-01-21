@@ -25,7 +25,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.text.SimpleDateFormat;
 
-import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
@@ -46,20 +50,6 @@ public @interface DateFormat {
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
-
-
-	/**
-	 * Defines several {@link DateFormat} annotations on the same element.
-	 *
-	 * @see DateFormat
-	 */
-	@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
-	@Retention(RUNTIME)
-	@Documented
-	@interface List {
-
-		DateFormat[] value();
-	}
 
 	public static class DateFormatValidator implements ConstraintValidator<DateFormat, CharSequence> {
 
