@@ -32,7 +32,7 @@ import org.springframework.messaging.MessageHeaders;
  * is used.
  * If incoming payload is a {@code byte[]} and incoming message {@code contentType} header is text-compatible
  * (e.g. {@code application/json}), it is converted into a {@link String}.
- * Otherwise the palyoad is passed to logger as is.
+ * Otherwise the payload is passed to logger as is.
  *
  * @author Artem Bilan
  */
