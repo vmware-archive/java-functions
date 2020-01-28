@@ -2,11 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.pivotal.java.function</groupId>
-	<artifactId>java-functions</artifactId>
+	<artifactId>java-functions-parent</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
-	<name>java-functions</name>
-	<description>Pivotal Java Functions</description>
+	<name>java-functions-parent</name>
+	<description>Pivotal Java Functions Parent</description>
 	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.3.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -44,6 +51,37 @@
 		<developerConnection>scm:git:ssh://git@github.com/pivotal/java-functions.git</developerConnection>
 		<url>https://github.com/pivotal/java-functions</url>
 	</scm>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>javadoc</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<quiet>true</quiet>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 	<distributionManagement>
 		<repository>
 			<id>repo.spring.io</id>
@@ -66,6 +104,37 @@
 					<name>Spring Milestone Repository</name>
 					<url>https://repo.spring.io/libs-milestone-local</url>
 				</repository>
+			</distributionManagement>
+		</profile>
+		<profile>
+			<id>central</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<distributionManagement>
+				<repository>
+					<id>sonatype-nexus-staging</id>
+					<name>Nexus Release Repository</name>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+				</repository>
+				<snapshotRepository>
+					<id>sonatype-nexus-snapshots</id>
+					<name>Sonatype Nexus Snapshots</name>
+					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+				</snapshotRepository>
 			</distributionManagement>
 		</profile>
 	</profiles>

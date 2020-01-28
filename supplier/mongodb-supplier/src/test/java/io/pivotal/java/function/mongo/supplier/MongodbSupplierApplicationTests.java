@@ -26,6 +26,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -40,6 +41,7 @@ import static org.assertj.core.api.Assertions.entry;
 @SpringBootTest(properties = {
 		"spring.data.mongodb.port=0",
 		"mongodb.collection=testing"})
+@Disabled
 class MongodbSupplierApplicationTests {
 
 	private ObjectMapper objectMapper = new ObjectMapper();
