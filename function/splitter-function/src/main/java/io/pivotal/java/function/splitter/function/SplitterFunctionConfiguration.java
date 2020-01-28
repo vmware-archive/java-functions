@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2019 Pivotal Software Inc, All Rights Reserved.
+ * Copyright (c) 2011-2020 Pivotal Software Inc, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@
 package io.pivotal.java.function.splitter.function;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.function.Function;
 
 import org.reactivestreams.Publisher;
+
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -35,6 +37,7 @@ import org.springframework.integration.splitter.DefaultMessageSplitter;
 import org.springframework.integration.splitter.ExpressionEvaluatingSplitter;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+
 import reactor.core.publisher.Flux;
 
 @Configuration
@@ -42,7 +45,7 @@ import reactor.core.publisher.Flux;
 public class SplitterFunctionConfiguration {
 
 	@Bean
-	public Function<Message<?>, Flux<Message<?>>> splitterFunction(AbstractMessageSplitter messageSplitter,
+	public Function<Message<?>, List<Message<?>>> splitterFunction(AbstractMessageSplitter messageSplitter,
 			SplitterFunctionProperties splitterFunctionProperties) {
 
 		messageSplitter.setApplySequence(splitterFunctionProperties.isApplySequence());
@@ -104,11 +107,12 @@ public class SplitterFunctionConfiguration {
 	private static final class ThreadLocalFluxSinkMessageChannel
 			implements MessageChannel, ReactiveStreamsSubscribableChannel {
 
-		private final ThreadLocal<Flux<Message<?>>> publisherThreadLocal = new ThreadLocal<>();
+		private final ThreadLocal<List<Message<?>>> publisherThreadLocal = new ThreadLocal<>();
 
 		@Override
+		@SuppressWarnings("unchecked")
 		public void subscribeTo(Publisher<? extends Message<?>> publisher) {
-			this.publisherThreadLocal.set(Flux.from(publisher));
+			this.publisherThreadLocal.set(Flux.from(publisher).collectList().cast(List.class).block());
 		}
 
 		@Override
