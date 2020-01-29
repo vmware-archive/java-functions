@@ -16,15 +16,14 @@
 
 package io.pivotal.java.function.mongo.consumer;
 
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import java.util.concurrent.CountDownLatch;
+import java.util.function.Function;
 import org.bson.Document;
 import org.junit.jupiter.api.Test;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -40,6 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author David Turanski
  */
 @SpringBootTest(properties = {
+		"spring.data.mongodb.port=0",
 		"mongodb.collection=testing"})
 class MongoDbConsumerApplicationTests {
 
@@ -47,13 +47,13 @@ class MongoDbConsumerApplicationTests {
 	private MongoDbConsumerProperties properties;
 
 	@Autowired
-	private MongoDbConsumerConfiguration.MongoDbConsumer mongoDbConsumer;
+	private Function<Flux<Message<?>>,Flux<Void>> mongoDbConsumer;
 
 	@Autowired
 	private ReactiveMongoTemplate mongoTemplate;
 
 	@Test
-	void testMongodbConsumer() throws InterruptedException {
+	void testMongodbConsumer() {
 		Map<String, String> data1 = new HashMap<>();
 		data1.put("foo", "bar");
 
@@ -67,29 +67,7 @@ class MongoDbConsumerApplicationTests {
 				new GenericMessage<>("{\"my_data\": \"THE DATA\"}")
 		);
 
-		CountDownLatch latch = new CountDownLatch(3);
-
-		mongoDbConsumer.setSubscriber(new Subscriber<Void>() {
-			@Override
-			public void onSubscribe(Subscription subscription) {
-			}
-
-			@Override
-			public void onNext(Void aVoid) {
-			}
-
-			@Override
-			public void onError(Throwable throwable) {
-			}
-
-			@Override
-			public void onComplete() {
-				latch.countDown();
-			}
-		});
-
-		mongoDbConsumer.accept(messages);
-		latch.await();
+		mongoDbConsumer.apply(messages).blockLast(Duration.ofSeconds(10));
 
 		StepVerifier.create(this.mongoTemplate.findAll(Document.class, properties.getCollection())
 				.sort(Comparator.comparing(d -> d.get("_id").toString())))

@@ -16,12 +16,9 @@
 
 package io.pivotal.java.function.mongo.consumer;
 
-import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
-import org.reactivestreams.Subscriber;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -55,8 +52,8 @@ public class MongoDbConsumerConfiguration {
 	}
 
 	@Bean
-	public MongoDbConsumer mongodbConsumer(ReactiveMessageHandler mongoConsumerMessageHandler) {
-		return new MongoDbConsumer(mongoConsumerMessageHandler);
+	public Function<Flux<Message<?>>,Flux<Void>> mongodbConsumer(ReactiveMessageHandler mongoConsumerMessageHandler) {
+		return messageFlux -> messageFlux.flatMap(msg-> mongoConsumerMessageHandler.handleMessage(msg));
 	}
 
 	@Bean
@@ -69,29 +66,5 @@ public class MongoDbConsumerConfiguration {
 		}
 		mongoDbMessageHandler.setCollectionNameExpression(collectionExpression);
 		return mongoDbMessageHandler;
-	}
-
-	public class MongoDbConsumer implements Consumer<Flux<Message<?>>> {
-
-		private Optional<Subscriber<Void>> subscriber;
-
-		private final ReactiveMessageHandler mongoConsumerMessageHandler;
-
-		public MongoDbConsumer(ReactiveMessageHandler mongoConsumerMessageHandler) {
-			this.subscriber = Optional.empty();
-			this.mongoConsumerMessageHandler = mongoConsumerMessageHandler;
-		}
-
-		public void setSubscriber(Subscriber<Void> subscriber) {
-			this.subscriber = Optional.of(subscriber);
-		}
-
-		@Override
-		public void accept(Flux<Message<?>> flux) {
-			flux.subscribe(msg-> {
-				Mono<Void> voidMono = mongoConsumerMessageHandler.handleMessage(msg);
-				subscriber.ifPresent(subscriber -> voidMono.subscribe(subscriber));
-			});
-		}
 	}
 }
