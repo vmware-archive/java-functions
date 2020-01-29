@@ -18,7 +18,7 @@ package io.pivotal.java.function.mongo.consumer;
 
 import java.util.function.Function;
 
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -52,8 +52,8 @@ public class MongoDbConsumerConfiguration {
 	}
 
 	@Bean
-	public Function<Flux<Message<?>>,Flux<Void>> mongodbConsumer(ReactiveMessageHandler mongoConsumerMessageHandler) {
-		return messageFlux -> messageFlux.flatMap(msg-> mongoConsumerMessageHandler.handleMessage(msg));
+	public Function<Message<?>, Mono<Void>> mongodbConsumer(ReactiveMessageHandler mongoConsumerMessageHandler) {
+		return mongoConsumerMessageHandler::handleMessage;
 	}
 
 	@Bean

@@ -25,6 +25,7 @@ import java.util.function.Function;
 import org.bson.Document;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ class MongoDbConsumerApplicationTests {
 	private MongoDbConsumerProperties properties;
 
 	@Autowired
-	private Function<Flux<Message<?>>,Flux<Void>> mongoDbConsumer;
+	private Function<Message<?>, Mono<Void>> mongoDbConsumer;
 
 	@Autowired
 	private ReactiveMongoTemplate mongoTemplate;
@@ -67,7 +68,7 @@ class MongoDbConsumerApplicationTests {
 				new GenericMessage<>("{\"my_data\": \"THE DATA\"}")
 		);
 
-		mongoDbConsumer.apply(messages).blockLast(Duration.ofSeconds(10));
+		messages.flatMap(mongoDbConsumer::apply).blockLast(Duration.ofSeconds(10));
 
 		StepVerifier.create(this.mongoTemplate.findAll(Document.class, properties.getCollection())
 				.sort(Comparator.comparing(d -> d.get("_id").toString())))

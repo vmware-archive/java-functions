@@ -24,5 +24,5 @@ TODO: provide a description
 
 `mongo-consumer`
 
-A `Function<Flux<Message<?>>,Flux<Void>>` which accepts incoming messages and stores the payload to a Mongo DB collection using the `ReactiveMongoDbStoringMessageHandler`.
+A `Function<Message<?>,Mono<Void>>` which accepts a message and stores the payload to a Mongo DB collection using the `ReactiveMongoDbStoringMessageHandler`.
 The message handler uses the reactive Mongo DB drivers so is completely non-blocking.
