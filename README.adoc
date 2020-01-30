@@ -27,8 +27,3 @@ Functions are grouped by the functional interface they implement.  Details are i
 * link:function/README.adoc[Functions]
 - *java.util.function.Supplier*
 * link:supplier/README.adoc[Suppliers]
-
-
-
-
-

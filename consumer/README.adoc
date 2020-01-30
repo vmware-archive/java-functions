@@ -10,10 +10,6 @@ The functions can be run as part of standalone Spring Boot applications.
 A `Function<Object, Mono<? extends WriteResult>>` consumer to perform an `INSERT` or `UPDATE` operation in the Cassandra according provided `cassandra`, `cassandra.cluster` and `spring.data.cassandra` configuration properties.
 An operation is performed in a reactive manner, so the returned `Mono` can be combined with some other post-function or subscribed directly in the target application.
 
-`rabbit-consumer`
-
-TODO: provide a description
-
 `log-consumer`
 
 A `Consumer` which accepts incoming messages and logs them using Spring Integration `LoggingHandler` and `LogConsumerProperties` configuration properties.
@@ -21,3 +17,12 @@ If incoming payload is a `byte[]` and `contentType` header is text-compatible, i
 Otherwise the payload is passing to logging as is.
 The Apache `commons-logging` is used as a framework for logging.
 Any logging library which is able to bridge from `commons-logging` can be used as a target logging system.
+
+`rabbit-consumer`
+
+TODO: provide a description
+
+`mongo-consumer`
+
+A `Function<Message<?>,Mono<Void>>` which accepts a message and stores the payload to a Mongo DB collection using the `ReactiveMongoDbStoringMessageHandler`.
+The message handler uses the reactive Mongo DB drivers so is completely non-blocking.
