@@ -17,6 +17,8 @@
 package io.pivotal.java.function.jdbc.supplier;
 
 import io.pivotal.java.function.splitter.function.SplitterFunctionConfiguration;
+
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.sql.DataSource;
@@ -57,11 +59,11 @@ public class JdbcSupplierConfiguration {
 	@Bean(name = "jdbcSupplier")
 	@PollableBean(splittable = true)
 	@ConditionalOnProperty(prefix = "jdbc", name = "split", matchIfMissing = true)
-	public Supplier<Flux<Message<?>>> splittedSupplier(Function<Message<?>, Flux<Message<?>>> splitterFunction) {
+	public Supplier<Flux<Message<?>>> splittedSupplier(Function<Message<?>, List<Message<?>>> splitterFunction) {
 		return () -> {
 			Message<?> received = jdbcMessageSource().receive();
 			if (received != null) {
-				return splitterFunction.apply(received); // multiple Message<Map<String, Object>>
+				return Flux.fromIterable(splitterFunction.apply(received)); // multiple Message<Map<String, Object>>
 			}
 			else {
 				return Flux.empty();

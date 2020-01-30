@@ -16,6 +16,7 @@
 
 package io.pivotal.java.function.mongo.supplier;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -61,11 +62,11 @@ public class MongodbSupplierConfiguration {
 	@Bean(name = "mongodbSupplier")
 	@PollableBean(splittable = true)
 	@ConditionalOnProperty(prefix = "mongodb", name = "split", matchIfMissing = true)
-	public Supplier<Flux<Message<?>>> splittedSupplier(Function<Message<?>, Flux<Message<?>>> splitterFunction) {
+	public Supplier<Flux<Message<?>>> splittedSupplier(Function<Message<?>, List<Message<?>>> splitterFunction) {
 		return () -> {
 			Message<?> received = mongoSource().receive();
 			if (received != null) {
-				return splitterFunction.apply(received); // multiple Message<Map<String, Object>>
+				return Flux.fromIterable(splitterFunction.apply(received)); // multiple Message<Map<String, Object>>
 			}
 			else {
 				return Flux.empty();
