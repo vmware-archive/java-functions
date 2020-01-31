@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.pivotal.java.function</groupId>
 	<artifactId>jdbc-supplier</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<name>jdbc-supplier</name>
@@ -15,21 +14,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<splitter.version>1.0.0.BUILD-SNAPSHOT</splitter.version>
-		<spring-cloud-stream.version>3.0.1.RELEASE</spring-cloud-stream.version>
+		<spring-cloud-function.version>3.0.2.BUILD-SNAPSHOT</spring-cloud-function.version>
 	</properties>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-function-dependencies</artifactId>
-				<version>3.0.1.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -47,6 +33,7 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-function-context</artifactId>
+			<version>${spring-cloud-function.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
@@ -56,7 +43,7 @@
 		<dependency>
 			<groupId>io.pivotal.java.function</groupId>
 			<artifactId>splitter-function</artifactId>
-			<version>${splitter.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -69,18 +56,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>repackage</id>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-						<configuration>
-							<attach>false</attach>
-							<classifier>exec</classifier>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

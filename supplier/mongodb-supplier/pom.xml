@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.pivotal.java.function</groupId>
     <artifactId>mongodb-supplier</artifactId>
     <version>1.0.0.BUILD-SNAPSHOT</version>
     <name>mongodb-supplier</name>
@@ -16,8 +15,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <spring-cloud-function.version>3.0.1.RELEASE</spring-cloud-function.version>
-        <splitter.version>1.0.0.BUILD-SNAPSHOT</splitter.version>
+        <spring-cloud-function.version>3.0.2.BUILD-SNAPSHOT</spring-cloud-function.version>
     </properties>
 
     <dependencies>
@@ -37,7 +35,7 @@
         <dependency>
             <groupId>io.pivotal.java.function</groupId>
             <artifactId>splitter-function</artifactId>
-            <version>${splitter.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -67,18 +65,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>repackage</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <attach>false</attach>
-                            <classifier>exec</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
