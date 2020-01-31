@@ -8,11 +8,16 @@
 	<description>Pivotal Java Functions Consumers</description>
 	<packaging>pom</packaging>
 
+	<parent>
+		<groupId>io.pivotal.java.function</groupId>
+		<artifactId>java-functions-parent</artifactId>
+		<version>1.0.0.BUILD-SNAPSHOT</version>
+	</parent>
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
 	
-<!-- in alphabetical order --> 
   	<modules>
 		<module>cassandra-consumer</module>
 		<module>log-consumer</module>
@@ -20,56 +25,5 @@
 		<module>rabbit-consumer</module>
 	</modules>
 
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
-			<comments>Copyright 2014-2020 the original author or authors.
 
-				Licensed under the Apache License, Version 2.0 (the "License");
-				you may not use this file except in compliance with the License.
-				You may obtain a copy of the License at
-
-				http://www.apache.org/licenses/LICENSE-2.0
-
-				Unless required by applicable law or agreed to in writing, software
-				distributed under the License is distributed on an "AS IS" BASIS,
-				WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-				implied.
-
-				See the License for the specific language governing permissions and
-				limitations under the License.</comments>
-		</license>
-	</licenses>
-
-	<scm>
-		<connection>scm:git:git://github.com/pivotal/java-functions.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/pivotal/java-functions.git</developerConnection>
-		<url>https://github.com/pivotal/java-functions</url>
-	</scm>
-	<distributionManagement>
-		<repository>
-			<id>repo.spring.io</id>
-			<name>Spring Release Repository</name>
-			<url>https://repo.spring.io/libs-release-local</url>
-		</repository>
-		<snapshotRepository>
-			<id>repo.spring.io</id>
-			<name>Spring Snapshot Repository</name>
-			<url>https://repo.spring.io/libs-snapshot-local</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<profiles>
-		<profile>
-			<id>milestone</id>
-			<distributionManagement>
-				<repository>
-					<id>repo.spring.io</id>
-					<name>Spring Milestone Repository</name>
-					<url>https://repo.spring.io/libs-milestone-local</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-	</profiles>
 </project>

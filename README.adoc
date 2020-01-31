@@ -1,6 +1,6 @@
 == Standalone Java Functions
 
-These are self contained Java functions that can be used in a variety streaming application platforms such as Spring Cloud Data Flow, Project RIFF etc.
+These are self contained Java functions that can be used in a variety of streaming application platforms such as Spring Cloud Data Flow, Project RIFF etc.
 The functions can be run as part of standalone Spring Boot applications.
 
 === Building
@@ -8,7 +8,7 @@ The functions can be run as part of standalone Spring Boot applications.
 Go to the root of the repo:
 
 ```bash
-./mvnw clean package
+./mvnw clean package (or install)
 ```
 
 Or go to the relevant function that you are interested in and then do:
