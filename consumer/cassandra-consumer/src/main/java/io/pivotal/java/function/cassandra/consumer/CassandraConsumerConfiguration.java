@@ -16,6 +16,7 @@
 
 package io.pivotal.java.function.cassandra.consumer;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.cassandra.core.InsertOptions;
 import org.springframework.data.cassandra.core.ReactiveCassandraOperations;
 import org.springframework.data.cassandra.core.UpdateOptions;
@@ -43,6 +43,7 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import io.pivotal.java.function.cassandra.consumer.query.ColumnNameExtractor;
 import io.pivotal.java.function.cassandra.consumer.query.InsertQueryColumnNameExtractor;
@@ -63,12 +64,13 @@ public class CassandraConsumerConfiguration {
 	private CassandraConsumerProperties cassandraSinkProperties;
 
 	@Bean
-	public IntegrationFlow cassandraConsumerFlow(MessageHandler cassandraSinkMessageHandler) {
+	public IntegrationFlow cassandraConsumerFlow(MessageHandler cassandraSinkMessageHandler,
+			ObjectMapper objectMapper) {
 		IntegrationFlowBuilder integrationFlowBuilder =
 				IntegrationFlows.from(CassandraConsumerFunction.class);
 		if (StringUtils.hasText(this.cassandraSinkProperties.getIngestQuery())) {
 			integrationFlowBuilder.transform(
-					new PayloadToMatrixTransformer(this.cassandraSinkProperties.getIngestQuery(),
+					new PayloadToMatrixTransformer(objectMapper, this.cassandraSinkProperties.getIngestQuery(),
 							CassandraMessageHandler.Type.UPDATE == this.cassandraSinkProperties.getQueryType()
 									? new UpdateQueryColumnNameExtractor()
 									: new InsertQueryColumnNameExtractor()));
@@ -135,13 +137,14 @@ public class CassandraConsumerConfiguration {
 
 	private static class PayloadToMatrixTransformer extends AbstractPayloadTransformer<Object, List<List<Object>>> {
 
-		private final Jackson2JsonObjectMapper jsonObjectMapper = new Jackson2JsonObjectMapper();
+		private final Jackson2JsonObjectMapper jsonObjectMapper;
 
 		private final List<String> columns = new LinkedList<>();
 
 		private final ISO8601StdDateFormat dateFormat = new ISO8601StdDateFormat();
 
-		PayloadToMatrixTransformer(String query, ColumnNameExtractor columnNameExtractor) {
+		PayloadToMatrixTransformer(ObjectMapper objectMapper, String query, ColumnNameExtractor columnNameExtractor) {
+			this.jsonObjectMapper = new Jackson2JsonObjectMapper(objectMapper);
 			this.columns.addAll(columnNameExtractor.extract(query));
 			this.jsonObjectMapper.getObjectMapper()
 					.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
@@ -165,7 +168,7 @@ public class CassandraConsumerConfiguration {
 								String string = (String) value;
 								if (this.dateFormat.looksLikeISO8601(string)) {
 									synchronized (this.dateFormat) {
-										value = this.dateFormat.parse(string);
+										value = new Date(this.dateFormat.parse(string).getTime()).toLocalDate();
 									}
 								}
 								if (isUuid(string)) {

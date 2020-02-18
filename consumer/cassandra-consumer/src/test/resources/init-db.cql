@@ -5,6 +5,6 @@ CREATE TABLE book  (
 	author  	text,
 	instock 	boolean,
 	pages   	int,
-	saledate	timestamp,
+	saledate	date,
 	title   	text
 );

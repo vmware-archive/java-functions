@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2019 the original author or authors.
+ * Copyright 2015-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package io.pivotal.java.function.cassandra.consumer.cluster;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
-import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
 
 /**
  * Common properties for the cassandra modules.
@@ -46,11 +45,6 @@ public class CassandraClusterProperties {
 	private boolean skipSslValidation;
 
 	/**
-	 * Enable/disable metrics collection for the created cluster.
-	 */
-	private boolean metricsEnabled = CassandraClusterFactoryBean.DEFAULT_METRICS_ENABLED;
-
-	/**
 	 * Base packages to scan for entities annotated with Table annotations.
 	 */
 	private String[] entityBasePackages = { };
@@ -64,10 +58,6 @@ public class CassandraClusterProperties {
 		this.initScript = initScript;
 	}
 
-	public void setMetricsEnabled(boolean metricsEnabled) {
-		this.metricsEnabled = metricsEnabled;
-	}
-
 	public void setSkipSslValidation(boolean skipSslValidation) {
 		this.skipSslValidation = skipSslValidation;
 	}
@@ -78,10 +68,6 @@ public class CassandraClusterProperties {
 
 	public Resource getInitScript() {
 		return this.initScript;
-	}
-
-	public boolean isMetricsEnabled() {
-		return this.metricsEnabled;
 	}
 
 	public boolean isSkipSslValidation() {
