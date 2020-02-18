@@ -14,8 +14,8 @@
 	</parent>
 
 	<properties>
-		<springIntegrationCassandara.version>0.7.0.RELEASE</springIntegrationCassandara.version>
-		<cassandra-unit-spring.version>3.11.2.0</cassandra-unit-spring.version>
+		<springIntegrationCassandara.version>0.8.0.BUILD-SNAPSHOT</springIntegrationCassandara.version>
+		<cassandra-unit-spring.version>4.3.1.0</cassandra-unit-spring.version>
 	</properties>
 
 	<dependencies>

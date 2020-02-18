@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2019-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@ package io.pivotal.java.function.cassandra.consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.data.cassandra.core.WriteResult;
 import org.springframework.test.context.TestPropertySource;
 
-import com.datastax.driver.core.utils.UUIDs;
 import io.pivotal.java.function.cassandra.consumer.domain.Book;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -41,11 +41,11 @@ class CassandraEntityInsertTests extends CassandraConsumerApplicationTests {
 	@Test
 	void testInsert() {
 		Book book = new Book();
-		book.setIsbn(UUIDs.timeBased());
+		book.setIsbn(UUID.randomUUID());
 		book.setTitle("Spring Integration Cassandra");
 		book.setAuthor("Cassandra Guru");
 		book.setPages(521);
-		book.setSaleDate(new Date());
+		book.setSaleDate(LocalDate.now());
 		book.setInStock(true);
 
 		Mono<? extends WriteResult> result = this.cassandraConsumer.apply(book);
