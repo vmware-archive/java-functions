@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2019-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,8 @@
 
 package io.pivotal.java.function.cassandra.consumer;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -30,24 +28,18 @@ import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.cassandra.core.WriteResult;
-import org.springframework.integration.support.json.Jackson2JsonObjectMapper;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.util.StringUtils;
 
-import com.datastax.driver.core.utils.UUIDs;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import io.pivotal.java.function.cassandra.consumer.domain.Book;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 /**
  * @author Artem Bilan
@@ -57,6 +49,7 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
 		properties = {
 				"spring.data.cassandra.keyspaceName=" + CassandraConsumerApplicationTests.CASSANDRA_KEYSPACE,
+				"spring.data.cassandra.localDatacenter=datacenter1",
 				"cassandra.cluster.createKeyspace=true" })
 @EmbeddedCassandra(configuration = EmbeddedCassandraServerHelper.CASSANDRA_RNDPORT_YML_FILE, timeout = 120000)
 @DirtiesContext
@@ -73,12 +66,13 @@ abstract class CassandraConsumerApplicationTests {
 	@BeforeAll
 	static void setUp() {
 		EmbeddedCassandraServerHelper.getSession();
-		System.setProperty("spring.data.cassandra.port", "" + EmbeddedCassandraServerHelper.getNativeTransportPort());
+		System.setProperty("spring.data.cassandra.contactPoints",
+				EmbeddedCassandraServerHelper.getHost() + ':' + EmbeddedCassandraServerHelper.getNativeTransportPort());
 	}
 
 	@AfterAll
 	static void cleanup() {
-		System.clearProperty("spring.data.cassandra.port");
+		System.clearProperty("spring.data.cassandra.contactPoints");
 	}
 
 	@AfterEach
@@ -98,7 +92,7 @@ abstract class CassandraConsumerApplicationTests {
 			b.setAuthor("SCDF Guru");
 			b.setPages(i * 10 + 5);
 			b.setInStock(true);
-			b.setSaleDate(new Date());
+			b.setSaleDate(LocalDate.now());
 			books.add(b);
 		}
 

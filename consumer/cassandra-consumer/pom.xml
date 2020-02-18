@@ -3,19 +3,19 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cassandra-consumer</artifactId>
-	<version>1.0.0.M1</version>
+	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<name>cassandra-consumer</name>
 	<description>Cassandra Consumer</description>
 
 	<parent>
 		<groupId>io.pivotal.java.function</groupId>
 		<artifactId>java-functions-consumer</artifactId>
-		<version>1.0.0.M1</version>
+		<version>1.0.0.BUILD-SNAPSHOT</version>
 	</parent>
 
 	<properties>
-		<springIntegrationCassandara.version>0.7.0.RELEASE</springIntegrationCassandara.version>
-		<cassandra-unit-spring.version>3.11.2.0</cassandra-unit-spring.version>
+		<springIntegrationCassandara.version>0.8.0.BUILD-SNAPSHOT</springIntegrationCassandara.version>
+		<cassandra-unit-spring.version>4.3.1.0</cassandra-unit-spring.version>
 	</properties>
 
 	<dependencies>
@@ -55,6 +55,12 @@
 			<artifactId>cassandra-unit-spring</artifactId>
 			<version>${cassandra-unit-spring.version}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.addthis.metrics</groupId>
+					<artifactId>reporter-config3</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.projectreactor</groupId>
