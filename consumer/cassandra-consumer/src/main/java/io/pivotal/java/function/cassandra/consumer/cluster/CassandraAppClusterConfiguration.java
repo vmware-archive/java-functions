@@ -84,7 +84,7 @@ public class CassandraAppClusterConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnProperty(prefix = "cassandra.cluster", name = "createKeyspace")
+	@ConditionalOnProperty("cassandra.cluster.create-keyspace")
 	public Object keyspaceCreator(CassandraProperties cassandraProperties, CqlSessionBuilder cqlSessionBuilder) {
 		CreateKeyspaceSpecification createKeyspaceSpecification =
 				CreateKeyspaceSpecification
@@ -111,7 +111,7 @@ public class CassandraAppClusterConfiguration {
 
 
 	@Bean
-	@ConditionalOnProperty(prefix = "cassandra.cluster", name = "initScript")
+	@ConditionalOnProperty("cassandra.cluster.init-script")
 	public Object keyspaceInitializer(CassandraClusterProperties cassandraClusterProperties,
 			ReactiveCassandraTemplate reactiveCassandraTemplate) throws IOException {
 
