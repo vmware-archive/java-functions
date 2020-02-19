@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.pivotal.java.function.rabbit.consumer;
 
 import java.util.function.Function;
@@ -22,7 +38,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.Expression;
 import org.springframework.integration.amqp.dsl.Amqp;
-import org.springframework.integration.amqp.dsl.AmqpOutboundEndpointSpec;
+import org.springframework.integration.amqp.dsl.AmqpOutboundChannelAdapterSpec;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 
@@ -48,7 +64,7 @@ public class RabbitConsumerConfiguration implements DisposableBean {
 	public Function<Message<?>, Object> rabbitConsumer(@Qualifier("amqpChannelAdapter") MessageHandler messageHandler) {
 		return o -> {
 			messageHandler.handleMessage(o);
-			return "Message sent to rabbitmq - check the exchange...";
+			return "";
 		};
 	}
 
@@ -56,7 +72,7 @@ public class RabbitConsumerConfiguration implements DisposableBean {
 	public MessageHandler amqpChannelAdapter(ConnectionFactory rabbitConnectionFactory)
 			throws Exception {
 		System.out.println("In amqpChannelAdapter - FOOBAR-1");
-		AmqpOutboundEndpointSpec handler = Amqp
+		AmqpOutboundChannelAdapterSpec handler = Amqp
 				.outboundAdapter(rabbitTemplate(this.properties.isOwnConnection()
 						? buildLocalConnectionFactory() : rabbitConnectionFactory))
 				.mappedRequestHeaders(properties.getMappedRequestHeaders())
@@ -79,7 +95,6 @@ public class RabbitConsumerConfiguration implements DisposableBean {
 		else {
 			handler.routingKey(this.properties.getRoutingKey());
 		}
-		System.out.println("In amqpChannelAdapter - FOOBAR-2");
 		return handler.get();
 	}
 
