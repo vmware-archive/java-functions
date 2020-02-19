@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2019-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,8 +35,10 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.data.cassandra.config.CqlSessionFactoryBean;
@@ -62,7 +64,7 @@ import reactor.core.publisher.Flux;
 public class CassandraAppClusterConfiguration {
 
 	@Bean
-	public static CqlSessionBuilderCustomizer clusterBuilderCustomizer(
+	public CqlSessionBuilderCustomizer clusterBuilderCustomizer(
 			CassandraClusterProperties cassandraClusterProperties) {
 
 		PropertyMapper map = PropertyMapper.get();
@@ -83,7 +85,7 @@ public class CassandraAppClusterConfiguration {
 
 	@Bean
 	@ConditionalOnProperty(prefix = "cassandra.cluster", name = "createKeyspace")
-	public static Object keyspaceCreator(CassandraProperties cassandraProperties, CqlSessionBuilder cqlSessionBuilder) {
+	public Object keyspaceCreator(CassandraProperties cassandraProperties, CqlSessionBuilder cqlSessionBuilder) {
 		CreateKeyspaceSpecification createKeyspaceSpecification =
 				CreateKeyspaceSpecification
 						.createKeyspace(cassandraProperties.getKeyspaceName())
@@ -101,8 +103,16 @@ public class CassandraAppClusterConfiguration {
 	}
 
 	@Bean
+	@Lazy
+	@DependsOn("keyspaceCreator")
+	public CqlSession cassandraSession(CqlSessionBuilder cqlSessionBuilder) {
+		return cqlSessionBuilder.build();
+	}
+
+
+	@Bean
 	@ConditionalOnProperty(prefix = "cassandra.cluster", name = "initScript")
-	public static Object keyspaceInitializer(CassandraClusterProperties cassandraClusterProperties,
+	public Object keyspaceInitializer(CassandraClusterProperties cassandraClusterProperties,
 			ReactiveCassandraTemplate reactiveCassandraTemplate) throws IOException {
 
 		String scripts =

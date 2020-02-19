@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2019-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import org.springframework.data.cassandra.core.WriteResult;
 import org.springframework.integration.support.json.Jackson2JsonObjectMapper;
@@ -36,6 +38,7 @@ import reactor.test.StepVerifier;
 /**
  * @author Artem Bilan
  */
+@DisabledOnOs(OS.WINDOWS)
 @TestPropertySource(properties = {
 		"cassandra.cluster.init-script=init-db.cql",
 		"cassandra.ingest-query=" +

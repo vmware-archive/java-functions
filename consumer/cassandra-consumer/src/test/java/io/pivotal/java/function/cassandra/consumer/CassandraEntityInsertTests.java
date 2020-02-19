@@ -22,6 +22,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import org.springframework.data.cassandra.core.WriteResult;
 import org.springframework.test.context.TestPropertySource;
@@ -33,6 +35,7 @@ import reactor.test.StepVerifier;
 /**
  * @author Artem Bilan
  */
+@DisabledOnOs(OS.WINDOWS)
 @TestPropertySource(properties = {
 		"spring.data.cassandra.schema-action=RECREATE",
 		"cassandra.cluster.entity-base-packages=io.pivotal.java.function.cassandra.consumer.domain" })
