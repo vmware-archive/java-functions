@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(properties = "transformer.expression=payload.toUpperCase()")
 @DirtiesContext
-public class TransformFunctionApplicationTests {
+public class TransformerFunctionApplicationTests {
 
 	@Autowired
 	Function<Message<?>, Message<?>> transformer;

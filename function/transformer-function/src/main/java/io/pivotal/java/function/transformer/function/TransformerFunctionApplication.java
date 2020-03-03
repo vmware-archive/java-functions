@@ -20,10 +20,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TransformFunctionApplication {
+public class TransformerFunctionApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TransformFunctionApplication.class, args);
+		SpringApplication.run(TransformerFunctionApplication.class, args);
 	}
 
 }

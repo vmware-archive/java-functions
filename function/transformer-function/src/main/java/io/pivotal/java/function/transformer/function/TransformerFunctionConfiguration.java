@@ -28,11 +28,11 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 
 @Configuration
-@EnableConfigurationProperties(TransformFunctionProperties.class)
-public class TransformFunctionConfiguration {
+@EnableConfigurationProperties(TransformerFunctionProperties.class)
+public class TransformerFunctionConfiguration {
 
 	@Bean
-	public Function<Message<?>, Message<?>> transformFunction(TransformFunctionProperties transformFunctionProperties) {
+	public Function<Message<?>, Message<?>> transformFunction(TransformerFunctionProperties transformerFunctionProperties) {
 			return message -> {
 				if (message.getPayload() instanceof byte[]) {
 					final MessageHeaders headers = message.getHeaders();
@@ -48,7 +48,7 @@ public class TransformFunctionConfiguration {
 				}
 				final ExpressionEvaluatingTransformer expressionEvaluatingTransformer = new ExpressionEvaluatingTransformer(
 						new SpelExpressionParser()
-								.parseExpression(transformFunctionProperties.getExpression()));
+								.parseExpression(transformerFunctionProperties.getExpression()));
 				return expressionEvaluatingTransformer.transform(message);
 			};
 	}
