@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest(properties = {
 		"spring.data.mongodb.port=0",
-		"mongodb.collection=testing"})
+		"mongodb.consumer.collection=testing"})
 class MongoDbConsumerApplicationTests {
 
 	@Autowired

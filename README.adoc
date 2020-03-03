@@ -19,7 +19,8 @@ Or go to the relevant function that you are interested in and then do:
 
 === Available Functions
 
-Functions are grouped by the functional interface they implement.  Details are included in the following pages.
+Functions are grouped by the functional interface they implement.
+Details are included in the following pages.
 
 - *java.util.function.Consumer*
 * link:consumer/README.adoc[Consumers]
