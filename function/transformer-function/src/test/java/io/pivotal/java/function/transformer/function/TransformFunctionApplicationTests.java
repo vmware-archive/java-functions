@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.transform.function;
+package io.pivotal.java.function.transformer.function;
 
 import java.util.function.Function;
 

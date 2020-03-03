@@ -13,4 +13,4 @@ Also if one of the `fileMarkers` or `charset` properties is present, the `FileSp
 
 `transform-function`
 
-Transform incoming message payload based on a SpEL expression and produces an outbound message. 
+Transform incoming message payload based on a SpEL expression and produces an outbound message.

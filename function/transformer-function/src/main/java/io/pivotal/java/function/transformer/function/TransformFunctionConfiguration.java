@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.transform.function;
+package io.pivotal.java.function.transformer.function;
 
 import java.util.function.Function;
 
@@ -22,7 +22,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.integration.splitter.ExpressionEvaluatingSplitter;
 import org.springframework.integration.transformer.ExpressionEvaluatingTransformer;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
