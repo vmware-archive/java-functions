@@ -19,6 +19,7 @@
 
   	<modules>
 		<module>splitter-function</module>
+		<module>transform-function</module>
 	</modules>
 
 </project>

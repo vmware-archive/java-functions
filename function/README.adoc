@@ -10,3 +10,7 @@ The functions can be run as part of standalone Spring Boot applications.
 This is a "one-to-many" Java function with a signature as `Function<Message<?>, List<Message<?>>>`. So, every inbound message is splitted into several output messages.
 This function is fuly based on the Spring integration `AbstractMessageSplitter` and supports a `delimiters`, `expression`, `applySequence` properties.
 Also if one of the `fileMarkers` or `charset` properties is present, the `FileSplitter` implementation is used and an incoming payload is treated as file for splitting.
+
+`transform-function`
+
+Transform incoming message payload based on a SpEL expression and produces an outbound message. 
