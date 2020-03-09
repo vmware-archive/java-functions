@@ -29,7 +29,7 @@ import org.springframework.validation.annotation.Validated;
  * @author David Turanski
  *
  */
-@ConfigurationProperties("mongodb")
+@ConfigurationProperties("mongodb.consumer")
 @Validated
 public class MongoDbConsumerProperties {
 

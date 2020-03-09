@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.transformer.function;
+package io.pivotal.java.function.spel.function;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 /**
- * Configuration properties for the Splitter Processor app.
+ * Configuration properties for the SpEL function.
  *
  * @author Gary Russell
  * @author Artem Bilan
  */
-@ConfigurationProperties("transformer")
-public class TransformerFunctionProperties {
+@ConfigurationProperties("spel.function")
+public class SpelFunctionProperties {
 
 	private static final Expression DEFAULT_EXPRESSION = new SpelExpressionParser().parseExpression("payload");
 
 	/**
-	 * A SpEL expression for transforming the payload.
+	 * A SpEL expression to apply.
 	 */
 	private String expression = DEFAULT_EXPRESSION.getExpressionString();
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.transformer.function;
+package io.pivotal.java.function.spel.function;
 
 import java.util.function.Function;
 
@@ -30,9 +30,9 @@ import org.springframework.util.MimeTypeUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(properties = "transformer.expression=payload.toUpperCase()")
+@SpringBootTest(properties = "spel.function.expression=payload.toUpperCase()")
 @DirtiesContext
-public class TransformerFunctionApplicationTests {
+public class SpelFunctionApplicationTests {
 
 	@Autowired
 	Function<Message<?>, Message<?>> transformer;

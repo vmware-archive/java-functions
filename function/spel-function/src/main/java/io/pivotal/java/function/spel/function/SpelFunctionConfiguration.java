@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2020 Pivotal Software Inc, All Rights Reserved.
+ * Copyright (c) 2020 Pivotal Software Inc, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.transformer.function;
+package io.pivotal.java.function.spel.function;
 
 import java.util.function.Function;
 
@@ -28,11 +28,11 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 
 @Configuration
-@EnableConfigurationProperties(TransformerFunctionProperties.class)
-public class TransformerFunctionConfiguration {
+@EnableConfigurationProperties(SpelFunctionProperties.class)
+public class SpelFunctionConfiguration {
 
 	@Bean
-	public Function<Message<?>, Message<?>> transformFunction(TransformerFunctionProperties transformerFunctionProperties) {
+	public Function<Message<?>, Message<?>> transformerFunction(ExpressionEvaluatingTransformer expressionEvaluatingTransformer) {
 			return message -> {
 				if (message.getPayload() instanceof byte[]) {
 					final MessageHeaders headers = message.getHeaders();
@@ -46,10 +46,15 @@ public class TransformerFunctionConfiguration {
 								.build();
 					}
 				}
-				final ExpressionEvaluatingTransformer expressionEvaluatingTransformer = new ExpressionEvaluatingTransformer(
-						new SpelExpressionParser()
-								.parseExpression(transformerFunctionProperties.getExpression()));
 				return expressionEvaluatingTransformer.transform(message);
 			};
 	}
+
+	@Bean
+	public ExpressionEvaluatingTransformer expressionEvaluatingTransformer(SpelFunctionProperties spelFunctionProperties){
+		return new ExpressionEvaluatingTransformer(new SpelExpressionParser()
+				.parseExpression(spelFunctionProperties.getExpression()));
+	}
+
+
 }

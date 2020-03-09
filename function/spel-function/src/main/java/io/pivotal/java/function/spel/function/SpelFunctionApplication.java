@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.transformer.function;
+package io.pivotal.java.function.spel.function;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TransformerFunctionApplication {
+public class SpelFunctionApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TransformerFunctionApplication.class, args);
+		SpringApplication.run(SpelFunctionApplication.class, args);
 	}
 
 }
