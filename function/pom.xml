@@ -18,8 +18,9 @@
 	</properties>
 
   	<modules>
-		<module>splitter-function</module>
+		<module>filter-function</module>
 		<module>spel-function</module>
+		<module>splitter-function</module>
 	</modules>
 
 </project>

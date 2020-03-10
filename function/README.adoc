@@ -14,3 +14,7 @@ Also if one of the `fileMarkers` or `charset` properties is present, the `FileSp
 `spel-function`
 
 Transform incoming message payload based on a SpEL expression and produces an outbound message.
+
+`filter-function`
+
+Filter an incoming message based on a boolean SpEL expression and produces that message or nothing according expression result.
