@@ -22,6 +22,7 @@
 		<module>log-consumer</module>
 		<module>mongodb-consumer</module>
 		<module>rabbit-consumer</module>
+		<module>jdbc-consumer</module>
 	</modules>
 
 </project>
