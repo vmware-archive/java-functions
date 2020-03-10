@@ -19,6 +19,7 @@
 
   	<modules>
 		<module>cassandra-consumer</module>
+		<module>jdbc-consumer</module>
 		<module>log-consumer</module>
 		<module>mongodb-consumer</module>
 		<module>rabbit-consumer</module>

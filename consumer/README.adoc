@@ -26,3 +26,10 @@ TODO: provide a description
 
 A `Function<Message<?>,Mono<Void>>` which accepts a message and stores the payload to a Mongo DB collection using the `ReactiveMongoDbStoringMessageHandler`.
 The message handler uses the reactive Mongo DB drivers so is completely non-blocking.
+
+`jdbc-consumer`
+
+A `Consumer` which accepts incoming messages and inserts them into a target relational database.
+See `JdbcConsumerProperties` JavaDocs for more information what and how to configure for this consumer.
+
+NOTE: A respective JDBC driver has to be added into classpath to make this consumer working properly against the target data base.
