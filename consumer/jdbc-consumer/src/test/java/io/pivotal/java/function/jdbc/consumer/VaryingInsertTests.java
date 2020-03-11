@@ -18,7 +18,6 @@ package io.pivotal.java.function.jdbc.consumer;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -40,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VaryingInsertTests extends JdbcConsumerApplicationTests {
 
 	@Test
-	@Disabled
+	@SuppressWarnings("unchecked")
 	public void testInsertion() {
 		Payload a = new Payload("hello", 42);
 		Payload b = new Payload("world", 12);

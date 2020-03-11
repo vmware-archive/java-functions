@@ -24,12 +24,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.messaging.Message;
+import org.springframework.test.annotation.DirtiesContext;
 
 /**
  * @author Soby Chacko
  */
 @SpringBootTest(properties = "spring.datasource.url=jdbc:h2:mem:test",
 		webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@DirtiesContext
 public class JdbcConsumerApplicationTests {
 
 	@Autowired

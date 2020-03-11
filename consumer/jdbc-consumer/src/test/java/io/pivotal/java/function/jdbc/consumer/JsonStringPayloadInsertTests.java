@@ -16,8 +16,6 @@
 
 package io.pivotal.java.function.jdbc.consumer;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -38,7 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class JsonStringPayloadInsertTests extends JdbcConsumerApplicationTests {
 
 	@Test
-	@Disabled
 	public void testInsertion() {
 		String stringA = "{\"a\": \"hello1\", \"b\": 42}";
 		String stringB = "{\"a\": \"hello2\", \"b\": null}";

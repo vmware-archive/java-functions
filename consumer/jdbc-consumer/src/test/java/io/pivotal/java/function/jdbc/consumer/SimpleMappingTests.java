@@ -16,7 +16,6 @@
 
 package io.pivotal.java.function.jdbc.consumer;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -38,7 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SimpleMappingTests extends JdbcConsumerApplicationTests {
 
 	@Test
-	@Disabled
 	public void testInsertion() {
 		Payload sent = new Payload("hello", 42);
 		final Message<Payload> message = MessageBuilder.withPayload(sent).build();
