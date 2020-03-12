@@ -16,6 +16,7 @@
 
 package io.pivotal.java.function.jdbc.consumer;
 
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -44,9 +45,8 @@ public class BatchInsertTimeoutTests extends JdbcConsumerApplicationTests {
 			jdbcConsumer.accept(message);
 		}
 		assertThat(jdbcOperations.queryForObject("select count(*) from messages", Integer.class)).isEqualTo(0);
-		Thread.sleep(200); // wait 200ms
-		assertThat(jdbcOperations
-				.queryForObject("select count(*) from messages", Integer.class)).isEqualTo((numberOfInserts));
+		Awaitility.await().until(() -> jdbcOperations
+				.queryForObject("select count(*) from messages", Integer.class), value -> value == numberOfInserts);
 	}
 
 }

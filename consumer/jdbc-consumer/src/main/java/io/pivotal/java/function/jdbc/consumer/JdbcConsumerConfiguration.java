@@ -85,6 +85,7 @@ import org.springframework.util.MultiValueMap;
 public class JdbcConsumerConfiguration {
 
 	private static final Log logger = LogFactory.getLog(JdbcConsumerConfiguration.class);
+
 	private static final Object NOT_SET = new Object();
 
 	private final JdbcConsumerProperties properties;

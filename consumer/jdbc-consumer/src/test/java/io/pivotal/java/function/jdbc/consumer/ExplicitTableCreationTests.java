@@ -33,8 +33,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Soby Chacko
  * @author Szabolcs Stremler
  */
-@TestPropertySource(properties = { "jdbc.consumer.tableName=foobar", "jdbc.consumer.initialize=classpath:explicit-script.sql", "jdbc." +
-		"consumer.columns=a,b" })
+@TestPropertySource(properties = {"jdbc.consumer.tableName=foobar",
+		"jdbc.consumer.initialize=classpath:explicit-script.sql",
+		"jdbc.consumer.columns=a,b"})
 public class ExplicitTableCreationTests extends JdbcConsumerApplicationTests {
 
 	@Test
