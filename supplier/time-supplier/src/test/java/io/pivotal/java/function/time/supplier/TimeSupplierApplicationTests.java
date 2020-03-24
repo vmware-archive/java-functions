@@ -19,6 +19,7 @@ package io.pivotal.java.function.time.supplier;
 import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
@@ -36,4 +37,6 @@ public abstract class TimeSupplierApplicationTests {
 
 	protected abstract void testTimeSupplier();
 
+	@SpringBootApplication
+	static class TestApplication {}
 }

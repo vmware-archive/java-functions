@@ -29,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Flux;
@@ -90,4 +91,6 @@ class MongodbSupplierApplicationTests {
 		return map;
 	}
 
+	@SpringBootApplication
+	static class TestApplication {}
 }

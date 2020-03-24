@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -47,4 +48,6 @@ public class FilterFunctionApplicationTests {
 				.isEqualTo("hello world");
 	}
 
+	@SpringBootApplication
+	static class TestApplication {}
 }

@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.function.Function;
 import org.bson.Document;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -84,4 +85,7 @@ class MongoDbConsumerApplicationTests {
 				})
 				.verifyComplete();
 	}
+
+	@SpringBootApplication
+	static class TestApplication {}
 }

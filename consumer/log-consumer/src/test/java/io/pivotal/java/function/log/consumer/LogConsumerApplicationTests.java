@@ -30,6 +30,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.support.MessageBuilder;
@@ -93,4 +94,7 @@ class LogConsumerApplicationTests {
 		assertThat(messageHeaders)
 				.containsEntry(MessageHeaders.CONTENT_TYPE, message.getHeaders().get(MessageHeaders.CONTENT_TYPE));
 	}
+
+	@SpringBootApplication
+	static class TestApplication {}
 }

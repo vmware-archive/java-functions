@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 import org.junit.jupiter.api.AfterEach;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -84,5 +85,8 @@ public class JdbcConsumerApplicationTests {
 		}
 
 	}
+
+	@SpringBootApplication
+	static class TestApplication {}
 
 }

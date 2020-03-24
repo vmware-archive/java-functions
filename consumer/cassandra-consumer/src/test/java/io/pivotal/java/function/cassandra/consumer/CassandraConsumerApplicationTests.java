@@ -32,6 +32,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.cassandra.core.WriteResult;
@@ -98,5 +99,8 @@ abstract class CassandraConsumerApplicationTests {
 
 		return books;
 	}
+
+	@SpringBootApplication
+	static class TestApplication {}
 
 }

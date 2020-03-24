@@ -20,6 +20,7 @@ import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -51,4 +52,8 @@ public class SpelFunctionApplicationTests {
 		assertThat(transformed.getPayload()).isEqualTo("{\"FOO\":\"BAR\"}");
 	}
 
+	@SpringBootApplication
+	static class TestApplication {
+
+	}
 }
