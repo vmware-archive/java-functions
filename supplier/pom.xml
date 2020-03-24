@@ -19,10 +19,10 @@
 	</properties>
 
   	<modules>
-		<module>http-supplier</module>
-		<module>jdbc-supplier</module>
-		<module>mongodb-supplier</module>
-		<module>time-supplier</module>
+		<module>filter-function</module>
+		<module>spel-function</module>
+		<module>splitter-function</module>
+		<module>counter-function</module>
 	</modules>
 
 </project>
