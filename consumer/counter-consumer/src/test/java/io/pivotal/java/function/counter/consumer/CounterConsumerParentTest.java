@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.counter.function;
+package io.pivotal.java.function.counter.consumer;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
@@ -28,13 +28,13 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DirtiesContext
-public class CounterFunctionParentTest {
+public class CounterConsumerParentTest {
 
 	@Autowired
 	protected SimpleMeterRegistry meterRegistry;
 
 	@Autowired
-	protected Function<Message<?>, Message<?>> counterFunction;
+	protected Consumer<Message<?>> counterConsumer;
 
 	protected Message<byte[]> message(String payload) {
 		return MessageBuilder.withPayload(payload.getBytes()).build();

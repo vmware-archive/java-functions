@@ -3,10 +3,10 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>counter-function</artifactId>
+	<artifactId>counter-consumer</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
-	<name>counter-function</name>
-	<description>Spring Native Function for computing counters</description>
+	<name>counter-consumer</name>
+	<description>Spring Native Consumer for computing counters</description>
 
 	<parent>
 		<groupId>io.pivotal.java.function</groupId>

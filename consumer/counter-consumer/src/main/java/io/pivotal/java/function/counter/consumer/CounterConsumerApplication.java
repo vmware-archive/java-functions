@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.counter.function;
+package io.pivotal.java.function.counter.consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,8 +23,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Christian Tzolov
  */
 @SpringBootApplication
-public class CounterFunctionApplication {
+public class CounterConsumerApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(CounterFunctionApplication.class, args);
+		SpringApplication.run(CounterConsumerApplication.class, args);
 	}
 }

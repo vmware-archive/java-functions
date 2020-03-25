@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.counter.function;
+package io.pivotal.java.function.counter.consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;

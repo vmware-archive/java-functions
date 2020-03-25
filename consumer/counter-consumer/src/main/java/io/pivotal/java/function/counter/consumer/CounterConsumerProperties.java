@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.counter.function;
+package io.pivotal.java.function.counter.consumer;
 
 import java.util.Map;
 
@@ -31,7 +31,7 @@ import org.springframework.validation.annotation.Validated;
  */
 @ConfigurationProperties("counter")
 @Validated
-public class CounterFunctionProperties {
+public class CounterConsumerProperties {
 
 	/**
 	 * The default name of the increment

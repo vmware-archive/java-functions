@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>java-functions-supplier</artifactId>
+	<artifactId>java-functions-consumer</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
-	<name>java-functions-supplier</name>
-	<description>Pivotal Java Functions Suppliers</description>
+	<name>java-functions-consumer</name>
+	<description>Pivotal Java Functions Consumers</description>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -15,13 +15,15 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-cloud-function.version>3.0.2.RELEASE</spring-cloud-function.version>
 	</properties>
 
   	<modules>
-		<module>filter-function</module>
-		<module>spel-function</module>
-		<module>splitter-function</module>
+		<module>cassandra-consumer</module>
+		<module>jdbc-consumer</module>
+		<module>log-consumer</module>
+		<module>mongodb-consumer</module>
+		<module>rabbit-consumer</module>
+		<module>counter-consumer</module>
 	</modules>
 
 </project>

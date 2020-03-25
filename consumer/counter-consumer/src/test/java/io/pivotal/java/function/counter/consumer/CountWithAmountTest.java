@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.counter.function;
+package io.pivotal.java.function.counter.consumer;
 
-import java.util.stream.IntStream;
-
-import io.micrometer.core.instrument.Counter;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.messaging.support.GenericMessage;
@@ -32,21 +29,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(properties = {
 		"counter.name=counter666",
 		"counter.tag.expression.foo='bar'",
-		"counter.tag.expression.gork='bork'"
+		"counter.amount-expression=payload.length()"
 })
-public class LiteralTagExpressionsTests extends CounterFunctionParentTest {
+class CountWithAmountTest extends CounterConsumerParentTest {
 
 	@Test
-	public void testCounterSink() {
-
-		IntStream.range(0, 13).forEach(i -> counterFunction.apply(new GenericMessage("hello")));
-
-		Counter fooCounter = meterRegistry.find("counter666").tag("foo", "bar").counter();
-		assertThat(fooCounter.count()).isEqualTo(13.0);
-
-		Counter gorkCounter = meterRegistry.find("counter666").tag("gork", "bork").counter();
-		assertThat(gorkCounter.count()).isEqualTo(13.0);
-
-		assertThat(fooCounter.getId()).isEqualTo(gorkCounter.getId());
+	void testCounterSink() {
+		String message = "hello world message";
+		double messageSize = Long.valueOf(message.length()).doubleValue();
+		counterConsumer.accept(new GenericMessage(message));
+		assertThat(meterRegistry.find("counter666").counter().count()).isEqualTo(messageSize);
 	}
 }

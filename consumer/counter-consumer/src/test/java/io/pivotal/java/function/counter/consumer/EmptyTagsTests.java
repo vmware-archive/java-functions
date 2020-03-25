@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.counter.function;
+package io.pivotal.java.function.counter.consumer;
 
 import java.util.Collection;
 
@@ -34,12 +34,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 		"counter.tag.expression.tag666=#jsonPath(payload,'$..noField')",
 		"counter.tag.expression.test=#jsonPath(payload,'$..test')",
 })
-public class NullTagsTests extends CounterFunctionParentTest {
+class EmptyTagsTests extends CounterConsumerParentTest {
 
 	@Test
-	public void testCounterSink() {
+	void testCounterSink() {
 
-		counterFunction.apply(message("{\"test\": null}"));
+		counterConsumer.accept(message("{\"test\": \"Bar\"}"));
 
 		Collection<Counter> fixedTagsCounters = meterRegistry.find("counter666").tagKeys("foo").counters();
 		assertThat(fixedTagsCounters.size()).isEqualTo(0);
@@ -48,6 +48,6 @@ public class NullTagsTests extends CounterFunctionParentTest {
 		assertThat(expressionTagsCounters.size()).isEqualTo(0);
 
 		Collection<Counter> testExpTagsCounters = meterRegistry.find("counter666").tagKeys("test").counters();
-		assertThat(testExpTagsCounters.size()).isEqualTo(0);
+		assertThat(testExpTagsCounters.size()).isEqualTo(1);
 	}
 }

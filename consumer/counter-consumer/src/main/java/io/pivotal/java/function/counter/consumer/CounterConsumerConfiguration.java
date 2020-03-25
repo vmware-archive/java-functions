@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.pivotal.java.function.counter.function;
+package io.pivotal.java.function.counter.consumer;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -49,11 +49,11 @@ import org.springframework.util.StringUtils;
  */
 @Configuration
 @Import(PropertiesSpelConverterConfiguration.class)
-@EnableConfigurationProperties({ CounterFunctionProperties.class })
-public class CounterFunctionConfiguration {
+@EnableConfigurationProperties({ CounterConsumerProperties.class })
+public class CounterConsumerConfiguration {
 
-	@Bean(name = { "counterFunction", "counterConsumer" })
-	public Function<Message<?>, Message<?>> counterFunction(CounterFunctionProperties properties, MeterRegistry[] meterRegistries,
+	@Bean(name = "counterConsumer")
+	public Consumer<Message<?>> counterConsumer(CounterConsumerProperties properties, MeterRegistry[] meterRegistries,
 			@Qualifier(IntegrationContextUtils.INTEGRATION_EVALUATION_CONTEXT_BEAN_NAME) EvaluationContext context) {
 
 		return message -> {
@@ -80,8 +80,6 @@ public class CounterFunctionConfiguration {
 			}
 
 			this.count(meterRegistries, counterName, fixedTags, allGroupedTags, amount);
-
-			return message;
 		};
 	}
 
