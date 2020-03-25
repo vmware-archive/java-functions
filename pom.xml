@@ -34,7 +34,6 @@
 		<module>supplier/jdbc-supplier</module>
 		<module>supplier/mongodb-supplier</module>
 		<module>supplier/time-supplier</module>
-		<module>spring-function-dependencies</module>
 		<module>spring-functions-parent</module>
 	</modules>
 

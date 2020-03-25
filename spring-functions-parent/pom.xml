@@ -21,9 +21,9 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>io.pivotal.java.function</groupId>
-				<artifactId>spring-function-dependencies</artifactId>
-				<version>1.0.0.BUILD-SNAPSHOT</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-parent</artifactId>
+				<version>${spring-boot.version}</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
