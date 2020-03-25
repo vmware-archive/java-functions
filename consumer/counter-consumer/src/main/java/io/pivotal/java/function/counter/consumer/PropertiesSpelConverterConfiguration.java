@@ -16,7 +16,8 @@
 
 package io.pivotal.java.function.counter.consumer;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.function.Function;
+
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,25 +37,37 @@ public class PropertiesSpelConverterConfiguration {
 
 	@Bean
 	@ConfigurationPropertiesBinding
-	public Converter<String, Expression> propertiesSpelConverter() {
-		return new SpelConverter();
+	public Converter<String, Expression> propertiesSpelConverter(StringToSpelConversionFunction stringToSpelConversionFunction) {
+		return new Converter<String, Expression>() { // NOTE Using lambda causes Java Generics issues.
+			@Override
+			public Expression convert(String source) {
+				return stringToSpelConversionFunction.apply(source);
+			}
+		};
+	}
+
+	@Bean
+	public Function<String, Expression> stringToSpelConversionFunction(@Lazy EvaluationContext evaluationContext) {
+		return new StringToSpelConversionFunction(evaluationContext);
 	}
 
 	/**
-	 * A simple converter from String to Expression.
+	 * Converter from String to Spring Expression.
 	 *
-	 * @author Eric Bottard
+	 * TODO: This could be a top level project.
 	 */
-	public static class SpelConverter implements Converter<String, Expression> {
+	public static class StringToSpelConversionFunction implements Function<String, Expression> {
 
 		private SpelExpressionParser parser = new SpelExpressionParser();
 
-		@Lazy
-		@Autowired
-		private EvaluationContext evaluationContext;
+		private final EvaluationContext evaluationContext;
+
+		public StringToSpelConversionFunction(EvaluationContext evaluationContext) {
+			this.evaluationContext = evaluationContext;
+		}
 
 		@Override
-		public Expression convert(String source) {
+		public Expression apply(String source) {
 			try {
 				Expression expression = parser.parseExpression(source);
 				if (expression instanceof SpelExpression) {
@@ -63,8 +76,8 @@ public class PropertiesSpelConverterConfiguration {
 				return expression;
 			}
 			catch (ParseException e) {
-				throw new IllegalArgumentException(
-						String.format("Could not convert '%s' into a SpEL expression", source), e);
+				throw new IllegalArgumentException(String.format(
+						"Could not convert '%s' into a SpEL expression", source), e);
 			}
 		}
 	}
