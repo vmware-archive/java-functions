@@ -8,8 +8,9 @@
 
     <parent>
         <groupId>io.pivotal.java.function</groupId>
-        <artifactId>java-functions-consumer</artifactId>
+        <artifactId>spring-functions-parent</artifactId>
         <version>1.0.0.BUILD-SNAPSHOT</version>
+        <relativePath>../../spring-functions-parent</relativePath>
     </parent>
 
     <dependencies>

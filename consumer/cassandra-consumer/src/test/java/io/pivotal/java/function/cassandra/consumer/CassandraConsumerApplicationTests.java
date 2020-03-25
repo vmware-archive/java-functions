@@ -22,14 +22,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
+import io.pivotal.java.function.cassandra.consumer.domain.Book;
 import org.cassandraunit.spring.CassandraUnitDependencyInjectionIntegrationTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.OS;
+import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,9 +38,6 @@ import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.cassandra.core.WriteResult;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestExecutionListeners;
-
-import io.pivotal.java.function.cassandra.consumer.domain.Book;
-import reactor.core.publisher.Mono;
 
 /**
  * @author Artem Bilan
