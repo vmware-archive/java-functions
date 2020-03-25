@@ -18,3 +18,39 @@ Transform incoming message payload based on a SpEL expression and produces an ou
 `filter-function`
 
 Filter an incoming message based on a boolean SpEL expression and produces that message or nothing according expression result.
+
+`tasklauncher-function`
+
+This is Java function with signature `Function<LaunchRequest, Optional<Long>` that submits a task launch request against a Spring Cloud Data Flow server.
+The `LaunchRequest` is defined as:
+
+```java
+public class LaunchRequest {
+	@JsonProperty("args")
+	private List<String> commandlineArguments = new ArrayList<>();
+	@JsonProperty("deploymentProps")
+	private Map<String, String> deploymentProperties = new HashMap<>();
+	@JsonProperty("name")
+	private String taskName;
+...
+}
+```
+And posted as JSON. e.g.,
+
+```json
+{"name":"timestamp"}
+```
+or
+
+[source,json]
+----
+{"name":"mytask","args":["a0=v0","a1=v1"],"deploymentProps":{"prop0":"val0"}}
+----
+
+The only required field is the task `name` which represents an existing `task` defined in Data Flow.
+
+If the Data Flow server is not deployed to the default URL (http://localhost:9393), you must configure https://docs.spring.io/spring-cloud-dataflow/docs/current/api/org/springframework/cloud/dataflow/rest/client/config/DataFlowClientProperties.html[DataFlowClientProperties], including authentication if necessary.
+
+The function will return an `Optional` with the `taskId` as the value. Before submitting the request, it first checks that the configured task platform is not at its current task execution limit (20 by default).
+If the task platform is at its limit, the function returns `Optional.empty()` and will log a warning message.
+
