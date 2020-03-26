@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -40,4 +41,6 @@ public class CounterConsumerParentTest {
 		return MessageBuilder.withPayload(payload.getBytes()).build();
 	}
 
+	@SpringBootApplication
+	static class TestApplication {}
 }

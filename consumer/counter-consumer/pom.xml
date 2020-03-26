@@ -10,8 +10,9 @@
 
 	<parent>
 		<groupId>io.pivotal.java.function</groupId>
-		<artifactId>java-functions-function</artifactId>
+		<artifactId>spring-functions-parent</artifactId>
 		<version>1.0.0.BUILD-SNAPSHOT</version>
+		<relativePath>../../spring-functions-parent</relativePath>
 	</parent>
 
 	<dependencies>
@@ -30,6 +31,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -44,12 +46,4 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 </project>

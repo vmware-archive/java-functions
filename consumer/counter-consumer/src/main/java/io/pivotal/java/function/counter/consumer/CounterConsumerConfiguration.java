@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -32,11 +33,14 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.Expression;
 import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.messaging.Message;
 import org.springframework.util.CollectionUtils;
@@ -48,9 +52,24 @@ import org.springframework.util.StringUtils;
  * @author Christian Tzolov
  */
 @Configuration
-@Import(PropertiesSpelConverterConfiguration.class)
 @EnableConfigurationProperties({ CounterConsumerProperties.class })
 public class CounterConsumerConfiguration {
+
+	@Bean
+	public Function<String, Expression> stringToSpelFunction(@Lazy EvaluationContext evaluationContext) {
+		return new StringToSpelConversionFunction(evaluationContext);
+	}
+
+	@Bean
+	@ConfigurationPropertiesBinding
+	public Converter<String, Expression> propertiesSpelConverter(Function<String, Expression> stringToSpelFunction) {
+		return new Converter<String, Expression>() { // NOTE Using lambda causes Java Generics issues.
+			@Override
+			public Expression convert(String source) {
+				return stringToSpelFunction.apply(source);
+			}
+		};
+	}
 
 	@Bean(name = "counterConsumer")
 	public Consumer<Message<?>> counterConsumer(CounterConsumerProperties properties, MeterRegistry[] meterRegistries,
