@@ -18,3 +18,43 @@ Transform incoming message payload based on a SpEL expression and produces an ou
 `filter-function`
 
 Filter an incoming message based on a boolean SpEL expression and produces that message or nothing according expression result.
+
+`task-launch-request-function`
+
+Transform input Message to a Message<TaskLaunchRequest>. The `TaskLaunchRequest` can be used as input to the `tasklauncher-function`.
+
+==== Task Launch Request
+
+The `TaskLaunchRequest` is a value object that is used to launch a task using a Data Flow server.
+The TaskLaunchRequest contains the name of the task to launch. This must the name of a defined task in Data Flow.
+You may optionally provide command line arguments and deployment properties. For more details, see `tasklauncher-function`.
+
+===== Task Name
+
+The task name is a required field. This may be statically configured by setting `task.launch.request.task-name`,
+or extracted from the Message by setting `task.launch.request.task-name-expression`.
+You may also provide a custom implementation of the `TaskNameMessageMapper` bean to enable more complex task name mappings.
+
+===== Task Command Line Arguments
+
+The task to be launched often requires additional data which is passed to the task as command line arguments.
+The `task.launch.request.args` property accepts a comma delimited string of key-value pairs, for example
+`key1=val1,key2=val2`. In addition, the  `task.launch.request.arg-expressions` property allows you to use SpEL expressions to evaluate
+message contents to extract command line arguments.
+For example, `task.launch.request.arg-expressions=foo=payload.toUpperCase(),bar=payload.substring(0,2)`.
+
+You may also provide a custom implementation of the `CommandLineArgumentsMessageMapper` bean to implement more complex logic.
+
+===== Task Deployment Properties
+
+Deployment properties are platform-specific configuration used by the `TaskLauncher` and are always statically configured by
+setting `task.launch.request.deployment-properties` and apply to every task launch request.
+
+NOTE: When embedding the `task-launch-request-function` into a Spring Boot application, it should be imported with
+`@ImportAutoConfiguration(TaskLaunchRequestFunctionConfiguration.class)`.
+This is required when providing custom bean definitions, as described above.
+Otherwise, the function configuration will not detect the provided beans.
+
+`TaskLaunchRequestFunctionTests` provides some configuration examples.
+
+
