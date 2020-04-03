@@ -30,6 +30,7 @@ import org.springframework.cloud.dataflow.rest.client.DataFlowOperations;
 import org.springframework.cloud.dataflow.rest.client.TaskOperations;
 import org.springframework.cloud.dataflow.rest.resource.CurrentTaskExecutionsResource;
 import org.springframework.cloud.dataflow.rest.resource.LauncherResource;
+import org.springframework.context.Lifecycle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -91,7 +92,7 @@ public class TaskLauncherFunctionTests {
 
 	private void setCurrentExecutionState(int runningExecutions) {
 		CurrentTaskExecutionsResource currentTaskExecutionsResource = new CurrentTaskExecutionsResource();
-		currentTaskExecutionsResource.setMaximumTaskExecutions(Integer.valueOf(3));
+		currentTaskExecutionsResource.setMaximumTaskExecutions(3);
 		currentTaskExecutionsResource.setRunningExecutionCount(runningExecutions);
 		currentTaskExecutionsResource.setName("default");
 		when(taskOperations.currentTaskExecutions())
@@ -102,11 +103,9 @@ public class TaskLauncherFunctionTests {
 	@Test
 	public void noLaunchersConfigured() {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(TestConfig.class);
-		Exception exception = assertThrows(IllegalStateException.class, () -> {
-			contextRunner
-					.withPropertyValues("spring.profiles.active=nolaunchers")
-					.run(context -> context.isRunning());
-		});
+		Exception exception = assertThrows(IllegalStateException.class, () -> contextRunner
+				.withPropertyValues("spring.profiles.active=nolaunchers")
+				.run(Lifecycle::isRunning));
 
 		assertThat(exception.getCause()).isInstanceOf(BeanCreationException.class);
 		assertThat(exception.getCause().getCause()).isInstanceOf(IllegalArgumentException.class);
@@ -125,8 +124,8 @@ public class TaskLauncherFunctionTests {
 			LauncherResource launcherResource = mock(LauncherResource.class);
 			when(launcherResource.getName()).thenReturn("default");
 
-			when(taskOperations.listPlatforms()).thenReturn(new PagedModel<>(
-					Collections.singletonList(launcherResource), null));
+			when(taskOperations.listPlatforms()).thenReturn(PagedModel.of(
+					Collections.singletonList(launcherResource), (PagedModel.PageMetadata) null));
 			return taskOperations;
 		}
 
@@ -134,8 +133,8 @@ public class TaskLauncherFunctionTests {
 		@Profile("nolaunchers")
 		TaskOperations taskOperationsNoLaunchers() {
 			TaskOperations taskOperations = mock(TaskOperations.class);
-			when(taskOperations.listPlatforms()).thenReturn(new PagedModel<>(
-					Collections.emptyList(), null));
+			when(taskOperations.listPlatforms()).thenReturn(PagedModel.of(
+					Collections.emptyList(), (PagedModel.PageMetadata) null));
 			return taskOperations;
 		}
 

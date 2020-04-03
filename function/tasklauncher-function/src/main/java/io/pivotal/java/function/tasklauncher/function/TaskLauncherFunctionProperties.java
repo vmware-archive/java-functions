@@ -21,7 +21,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author David Turanski
  **/
-@ConfigurationProperties
+@ConfigurationProperties("tasklauncher")
 public class TaskLauncherFunctionProperties {
 	/**
 	 * The Spring Cloud Data Flow platform to use for launching tasks.

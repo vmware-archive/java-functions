@@ -42,10 +42,10 @@ And posted as JSON. e.g.,
 ```
 or
 
-[source,json]
-----
+```json
+
 {"name":"mytask","args":["a0=v0","a1=v1"],"deploymentProps":{"prop0":"val0"}}
-----
+```
 
 The only required field is the task `name` which represents an existing `task` defined in Data Flow.
 

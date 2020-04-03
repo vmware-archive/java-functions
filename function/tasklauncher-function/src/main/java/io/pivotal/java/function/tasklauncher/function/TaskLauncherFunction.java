@@ -25,8 +25,9 @@ import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.springframework.cloud.dataflow.rest.client.TaskOperations;
 import org.springframework.cloud.dataflow.rest.resource.CurrentTaskExecutionsResource;
 import org.springframework.cloud.dataflow.rest.resource.LauncherResource;
@@ -42,7 +43,7 @@ import org.springframework.util.StringUtils;
  * @author David Turanski
  **/
 public class TaskLauncherFunction implements Function<LaunchRequest, Optional<Long>> {
-	private static final Logger log = LoggerFactory.getLogger(TaskLauncherFunction.class);
+	private static final Log log = LogFactory.getLog(TaskLauncherFunction.class);
 
 	static final String TASK_PLATFORM_NAME = "spring.cloud.dataflow.task.platformName";
 
@@ -65,7 +66,7 @@ public class TaskLauncherFunction implements Function<LaunchRequest, Optional<Lo
 		if (platformIsAcceptingNewTasks()) {
 			return Optional.of(launchTask(launchRequest));
 		}
-		log.warn("Platform is at capacity. Did not submit task launch request for task {}.", launchRequest.getTaskName() );
+		log.warn(String.format("Platform is at capacity. Did not submit task launch request for task %s.", launchRequest.getTaskName()));
 		return Optional.empty();
 	}
 
