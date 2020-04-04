@@ -16,11 +16,6 @@
 
 package io.pivotal.java.function.log.consumer;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import java.util.function.Consumer;
 
 import org.apache.commons.logging.Log;
@@ -40,6 +35,11 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.util.MimeType;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 /**
  * @author Artem Bilan
  */
@@ -53,15 +53,6 @@ class LogConsumerApplicationTests {
 	@Autowired
 	@Qualifier("logConsumerFlow.logging-channel-adapter#0")
 	private LoggingHandler loggingHandler;
-
-	@Test
-	public void testTextContentType() {
-		Message<byte[]> message =
-				MessageBuilder.withPayload("{\"foo\":\"bar\"}".getBytes())
-						.setHeader("contentType", MimeType.valueOf("text/plain"))
-						.build();
-		testMessage(message, "{\"foo\":\"bar\"}");
-	}
 
 	@Test
 	public void testJsonContentType() {

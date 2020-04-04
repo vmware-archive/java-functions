@@ -19,6 +19,7 @@ package io.pivotal.java.function.spel.function;
 import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,7 +47,7 @@ public class SpelFunctionApplicationTests {
 
 	@Test
 	public void testJson() {
-		Message<byte[]> message = MessageBuilder.withPayload("{\"foo\":\"bar\"}".getBytes())
+		Message<?> message = MessageBuilder.withPayload("{\"foo\":\"bar\"}")
 				.setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON).build();
 		final Message<?> transformed = this.transformer.apply(message);
 		assertThat(transformed.getPayload()).isEqualTo("{\"FOO\":\"BAR\"}");

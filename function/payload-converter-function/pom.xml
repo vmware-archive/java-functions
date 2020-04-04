@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>spel-function</artifactId>
+	<artifactId>payload-converter-function</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
-	<name>spel-function</name>
-	<description>Spring Native Function for applying SpEL expressions</description>
+	<name>payload-converter-function</name>
+	<description>Utility message conversion functions</description>
 
 	<parent>
 		<groupId>io.pivotal.java.function</groupId>
@@ -16,15 +17,10 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>io.pivotal.java.function</groupId>
-			<artifactId>payload-converter-function</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-integration</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -35,11 +31,6 @@
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
