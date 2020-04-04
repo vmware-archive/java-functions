@@ -24,7 +24,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
 
 /**
  * The Configuration class for {@link Consumer} which logs incoming data.
@@ -43,23 +42,11 @@ public class LogConsumerConfiguration {
 	@Bean
 	IntegrationFlow logConsumerFlow(LogConsumerProperties logSinkProperties) {
 		return IntegrationFlows.from(MessageConsumer.class, (gateway) -> gateway.beanName("logConsumer"))
-				.handle((payload, headers) -> {
-					if (payload instanceof byte[]) {
-						String contentType =
-								headers.containsKey(MessageHeaders.CONTENT_TYPE)
-										? headers.get(MessageHeaders.CONTENT_TYPE).toString()
-										: "application/json";
-						if (contentType.contains("text") || contentType.contains("json")
-								|| contentType.contains("x-spring-tuple")) {
-							return new String((byte[]) payload);
-						}
-					}
-					return payload;
-				})
+				.handle((payload, headers) -> payload)
 				.log(logSinkProperties.getLevel(), logSinkProperties.getName(), logSinkProperties.getExpression())
 				.get();
 	}
 
-	private interface MessageConsumer extends Consumer<Message<?>> { }
+	private interface MessageConsumer extends Consumer<Message<?>> {}
 
 }

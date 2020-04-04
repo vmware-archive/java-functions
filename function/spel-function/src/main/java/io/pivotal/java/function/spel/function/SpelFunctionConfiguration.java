@@ -24,8 +24,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.transformer.ExpressionEvaluatingTransformer;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
 
 @Configuration
 @EnableConfigurationProperties(SpelFunctionProperties.class)
@@ -35,23 +33,7 @@ public class SpelFunctionConfiguration {
 	public Function<Message<?>, Message<?>> spelFunction(
 			ExpressionEvaluatingTransformer expressionEvaluatingTransformer) {
 
-		return message -> {
-			if (message.getPayload() instanceof byte[]) {
-				final MessageHeaders headers = message.getHeaders();
-				String contentType =
-						headers.containsKey(MessageHeaders.CONTENT_TYPE)
-								? headers.get(MessageHeaders.CONTENT_TYPE).toString()
-								: "application/json";
-				if (contentType.contains("text") || contentType.contains("json")
-						|| contentType.contains("x-spring-tuple")) {
-
-					message = MessageBuilder.withPayload(new String(((byte[]) message.getPayload())))
-							.copyHeaders(message.getHeaders())
-							.build();
-				}
-			}
-			return expressionEvaluatingTransformer.transform(message);
-		};
+		return message -> expressionEvaluatingTransformer.transform(message);
 	}
 
 	@Bean
@@ -61,6 +43,5 @@ public class SpelFunctionConfiguration {
 		return new ExpressionEvaluatingTransformer(new SpelExpressionParser()
 				.parseExpression(spelFunctionProperties.getExpression()));
 	}
-
 
 }
