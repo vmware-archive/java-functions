@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 the original author or authors.
+ * Copyright 2019-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,10 @@ import org.springframework.integration.jdbc.JdbcPollingChannelAdapter;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Flux;
 
+/**
+ * @author Soby Chacko
+ * @author Artem Bilan
+ */
 @Configuration
 @EnableConfigurationProperties(JdbcSupplierProperties.class)
 @Import(SplitterFunctionConfiguration.class)
@@ -58,7 +62,7 @@ public class JdbcSupplierConfiguration {
 
 	@Bean(name = "jdbcSupplier")
 	@PollableBean(splittable = true)
-	@ConditionalOnProperty(prefix = "jdbc", name = "split", matchIfMissing = true)
+	@ConditionalOnProperty(prefix = "jdbc.supplier", name = "split", matchIfMissing = true)
 	public Supplier<Flux<Message<?>>> splittedSupplier(Function<Message<?>, List<Message<?>>> splitterFunction) {
 		return () -> {
 			Message<?> received = jdbcMessageSource().receive();
@@ -72,7 +76,7 @@ public class JdbcSupplierConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnProperty(prefix = "jdbc", name = "split", havingValue = "false")
+	@ConditionalOnProperty(prefix = "jdbc.supplier", name = "split", havingValue = "false")
 	public Supplier<Message<?>> jdbcSupplier() {
 		return () -> jdbcMessageSource().receive();
 	}
