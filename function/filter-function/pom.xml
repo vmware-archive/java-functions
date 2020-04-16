@@ -5,7 +5,7 @@
 	<artifactId>filter-function</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<name>filter-function</name>
-	<description>Spring Native Function for applying fitler SpEL expressions</description>
+	<description>Spring Native Function for applying filter SpEL expressions</description>
 
 	<parent>
 		<groupId>io.pivotal.java.function</groupId>

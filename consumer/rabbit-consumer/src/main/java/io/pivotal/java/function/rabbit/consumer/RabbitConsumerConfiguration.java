@@ -71,7 +71,7 @@ public class RabbitConsumerConfiguration implements DisposableBean {
 	@Bean
 	public MessageHandler amqpChannelAdapter(ConnectionFactory rabbitConnectionFactory)
 			throws Exception {
-		System.out.println("In amqpChannelAdapter - FOOBAR-1");
+
 		AmqpOutboundChannelAdapterSpec handler = Amqp
 				.outboundAdapter(rabbitTemplate(this.properties.isOwnConnection()
 						? buildLocalConnectionFactory() : rabbitConnectionFactory))
@@ -106,7 +106,6 @@ public class RabbitConsumerConfiguration implements DisposableBean {
 
 	@Bean
 	public RabbitTemplate rabbitTemplate(ConnectionFactory rabbitConnectionFactory) {
-		System.out.println("IN RABBIT TEMPLATE...");
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(rabbitConnectionFactory);
 		if (this.messageConverter != null) {
 			rabbitTemplate.setMessageConverter(this.messageConverter);
@@ -122,7 +121,7 @@ public class RabbitConsumerConfiguration implements DisposableBean {
 	}
 
 	@Override
-	public void destroy() throws Exception {
+	public void destroy() {
 		if (this.ownConnectionFactory != null) {
 			this.ownConnectionFactory.destroy();
 		}

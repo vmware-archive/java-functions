@@ -36,7 +36,6 @@ public class ExpressionCounterNameTests extends CounterConsumerParentTest {
 	@Test
 	void testCounterSink() {
 		IntStream.range(0, 13).forEach(i -> counterConsumer.accept(new GenericMessage("hello")));
-		System.out.println(meterRegistry.getMeters());
 		assertThat(meterRegistry.find("hello").counter().count()).isEqualTo(13.0);
 	}
 }
