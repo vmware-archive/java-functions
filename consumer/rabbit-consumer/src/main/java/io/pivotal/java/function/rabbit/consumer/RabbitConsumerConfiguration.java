@@ -18,6 +18,8 @@ package io.pivotal.java.function.rabbit.consumer;
 
 import java.util.function.Function;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -46,6 +48,8 @@ import org.springframework.messaging.MessageHandler;
 @Configuration
 public class RabbitConsumerConfiguration implements DisposableBean {
 
+	private static final Log logger = LogFactory.getLog(RabbitConsumerConfiguration.class);
+	
 	@Autowired
 	private RabbitProperties bootProperties;
 
@@ -71,7 +75,7 @@ public class RabbitConsumerConfiguration implements DisposableBean {
 	@Bean
 	public MessageHandler amqpChannelAdapter(ConnectionFactory rabbitConnectionFactory)
 			throws Exception {
-		System.out.println("In amqpChannelAdapter - FOOBAR-1");
+		logger.debug("In amqpChannelAdapter");
 		AmqpOutboundChannelAdapterSpec handler = Amqp
 				.outboundAdapter(rabbitTemplate(this.properties.isOwnConnection()
 						? buildLocalConnectionFactory() : rabbitConnectionFactory))
@@ -106,10 +110,13 @@ public class RabbitConsumerConfiguration implements DisposableBean {
 
 	@Bean
 	public RabbitTemplate rabbitTemplate(ConnectionFactory rabbitConnectionFactory) {
-		System.out.println("IN RABBIT TEMPLATE...");
+		logger.debug("IN RABBIT TEMPLATE...");
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(rabbitConnectionFactory);
 		if (this.messageConverter != null) {
 			rabbitTemplate.setMessageConverter(this.messageConverter);
+		} else {
+			// configure default message converter
+			rabbitTemplate.setMessageConverter(this.jsonConverter());
 		}
 		return rabbitTemplate;
 	}
@@ -131,21 +138,15 @@ public class RabbitConsumerConfiguration implements DisposableBean {
 }
 
 class AutoConfig extends RabbitAutoConfiguration {
-
 	static class Creator extends RabbitConnectionFactoryCreator {
-
 		@Override
 		public CachingConnectionFactory rabbitConnectionFactory(RabbitProperties config,
-																ObjectProvider<ConnectionNameStrategy> connectionNameStrategy)
-				throws Exception {
-			CachingConnectionFactory cf = super.rabbitConnectionFactory(config,
-					connectionNameStrategy);
-			cf.setConnectionNameStrategy(
-					connectionFactory -> "rabbit.sink.own.connection");
+				ObjectProvider<ConnectionNameStrategy> connectionNameStrategy) throws Exception {
+			CachingConnectionFactory cf = super.rabbitConnectionFactory(config, connectionNameStrategy);
+			cf.setConnectionNameStrategy(connectionFactory -> "rabbit.sink.own.connection");
 			cf.afterPropertiesSet();
 			return cf;
 		}
-
 	}
 
 }
