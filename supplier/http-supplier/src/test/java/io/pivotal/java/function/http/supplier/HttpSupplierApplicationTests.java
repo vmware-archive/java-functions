@@ -3,21 +3,27 @@ package io.pivotal.java.function.http.supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.function.Supplier;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.integration.http.HttpHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslProvider;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import reactor.core.publisher.Flux;
+import reactor.netty.http.client.HttpClient;
 import reactor.test.StepVerifier;
 
 /**
@@ -25,15 +31,21 @@ import reactor.test.StepVerifier;
  *
  * @author Artem Bilan
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+		properties = {
+				"server.ssl.key-store=classpath:test.jks",
+				"server.ssl.key-password=password",
+				"server.ssl.trust-store=classpath:test.jks",
+				"server.ssl.client-auth=want"
+		})
 public class HttpSupplierApplicationTests {
 
 	@Autowired
-	private TestRestTemplate testRestTemplate;
-
-	@Autowired
 	private Supplier<Flux<Message<byte[]>>> httpSupplier;
+
+	@LocalServerPort
+	private int port;
 
 	@Test
 	public void testHttpSupplier() {
@@ -48,7 +60,9 @@ public class HttpSupplierApplicationTests {
 												.isEqualTo("test1".getBytes()))
 										.satisfies((msg) -> assertThat(msg.getHeaders())
 												.containsEntry(MessageHeaders.CONTENT_TYPE,
-														new MediaType("text", "plain", StandardCharsets.ISO_8859_1)))
+														new MediaType("text", "plain", StandardCharsets.UTF_8))
+												.extractingByKey(HttpHeaders.REQUEST_URL).asString()
+												.startsWith("https://"))
 						)
 						.assertNext((message) ->
 								assertThat(message)
@@ -61,9 +75,23 @@ public class HttpSupplierApplicationTests {
 						.thenCancel()
 						.verifyLater();
 
-		this.testRestTemplate.postForObject("/", "test1", void.class);
-		this.testRestTemplate.postForObject("/", new TestPojo("test2"), void.class);
-		this.testRestTemplate.postForObject("/", new TestPojo("test3"), void.class);
+		HttpClient httpClient =
+				HttpClient.create()
+						.secure(sslSpec ->
+								sslSpec.sslContext(SslContextBuilder.forClient()
+										.sslProvider(SslProvider.JDK)
+										.trustManager(InsecureTrustManagerFactory.INSTANCE)));
+
+		WebClient webClient =
+				WebClient.builder()
+						.clientConnector(new ReactorClientHttpConnector(httpClient))
+						.baseUrl("https://localhost:" + port)
+						.build();
+
+		WebClient.RequestBodySpec requestBodySpec = webClient.post().uri("/");
+		requestBodySpec.bodyValue("test1").exchange().block(Duration.ofSeconds(10));
+		requestBodySpec.bodyValue(new TestPojo("test2")).exchange().block(Duration.ofSeconds(10));
+		requestBodySpec.bodyValue(new TestPojo("test3")).exchange().block(Duration.ofSeconds(10));
 
 		stepVerifier.verify();
 	}
@@ -90,5 +118,6 @@ public class HttpSupplierApplicationTests {
 	}
 
 	@SpringBootApplication
-	static class TestApplication {}
+	static class TestApplication { }
+
 }
