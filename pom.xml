@@ -33,6 +33,7 @@
 		<module>function/splitter-function</module>
 		<module>function/tasklauncher-function</module>
 
+		<module>supplier/file-supplier</module>
 		<module>supplier/http-supplier</module>
 		<module>supplier/jdbc-supplier</module>
 		<module>supplier/mongodb-supplier</module>

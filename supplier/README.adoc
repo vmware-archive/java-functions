@@ -25,3 +25,8 @@ The `MongodbSupplierProperties` exposes configuration properties for this Suppli
 The `time-supplier` will simply emit a String with the current time every so often.
 The `TimeSupplierProperties` exposes configuration properties for this supplier bean.
 The default date format is `MM/dd/yy HH:mm:ss`.
+
+`file-supplier`
+
+The `file-supplier` polls an application directory and sends new files or their contents as `Supplier<Flux<Message<?>>>` through a bean named `fileSupplier`.
+The `FileSupplierProperties` exposes configuration properties for this supplier bean.
