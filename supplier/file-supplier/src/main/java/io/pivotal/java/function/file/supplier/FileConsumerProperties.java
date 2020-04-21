@@ -23,6 +23,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 /**
+ * TODO: This will be used in other apps like (S)FTP and S3. Therefore, it might be moved to a common place.
+ *
  * @author David Turanski
  * @author Artem Bilan
  */

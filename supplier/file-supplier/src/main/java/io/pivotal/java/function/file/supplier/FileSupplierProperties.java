@@ -40,7 +40,7 @@ public class FileSupplierProperties {
 	/**
 	 * The directory to poll for new files.
 	 */
-	private String directory = DEFAULT_DIR;
+	private File directory = new File(DEFAULT_DIR);
 
 	/**
 	 * Set to true to include an AcceptOnceFileListFilter which prevents duplicates.
@@ -62,11 +62,11 @@ public class FileSupplierProperties {
 	 */
 	private Duration delayWhenEmpty = Duration.ofSeconds(1);
 
-	public String getDirectory() {
+	public File getDirectory() {
 		return this.directory;
 	}
 
-	public void setDirectory(String directory) {
+	public void setDirectory(File directory) {
 		this.directory = directory;
 	}
 

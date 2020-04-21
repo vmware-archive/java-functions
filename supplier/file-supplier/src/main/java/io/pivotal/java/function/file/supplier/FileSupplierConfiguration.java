@@ -16,7 +16,6 @@
 
 package io.pivotal.java.function.file.supplier;
 
-import java.io.File;
 import java.util.function.Supplier;
 
 import org.reactivestreams.Publisher;
@@ -47,6 +46,7 @@ import reactor.core.scheduler.Schedulers;
 public class FileSupplierConfiguration {
 
 	private final FileSupplierProperties fileSupplierProperties;
+
 	private final FileConsumerProperties fileConsumerProperties;
 
 	@Autowired
@@ -63,7 +63,7 @@ public class FileSupplierConfiguration {
 	@Bean
 	public FileInboundChannelAdapterSpec fileMessageSource() {
 		final FileInboundChannelAdapterSpec fileInboundChannelAdapterSpec =
-				Files.inboundAdapter(new File(this.fileSupplierProperties.getDirectory()));
+				Files.inboundAdapter(this.fileSupplierProperties.getDirectory());
 		if (StringUtils.hasText(this.fileSupplierProperties.getFilenamePattern())) {
 			fileInboundChannelAdapterSpec.patternFilter(this.fileSupplierProperties.getFilenamePattern());
 		}
@@ -94,7 +94,7 @@ public class FileSupplierConfiguration {
 
 	@Bean
 	public Supplier<Flux<Message<?>>> fileSupplier() {
-		if (this.fileConsumerProperties.getMode() == FileReadingMode.ref){
+		if (this.fileConsumerProperties.getMode() == FileReadingMode.ref) {
 			return this::fileMessageFlux;
 		}
 		else {
