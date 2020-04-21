@@ -22,6 +22,7 @@
   	<modules>
 		<module>consumer/cassandra-consumer</module>
 		<module>consumer/counter-consumer</module>
+		<module>consumer/file-consumer</module>
 		<module>consumer/jdbc-consumer</module>
 		<module>consumer/log-consumer</module>
 		<module>consumer/mongodb-consumer</module>
