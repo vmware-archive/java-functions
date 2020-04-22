@@ -19,6 +19,10 @@ Transform incoming message payload based on a SpEL expression and produces an ou
 
 Filter an incoming message based on a boolean SpEL expression and produces that message or nothing according expression result.
 
+`header-enricher-function`
+
+Enrich the incoming message headers based on expression evaluated headers.
+
 `tasklauncher-function`
 
 This is Java function with signature `Function<LaunchRequest, Optional<Long>` that submits a task launch request against a Spring Cloud Data Flow server.
