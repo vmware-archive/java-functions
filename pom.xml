@@ -28,6 +28,7 @@
 		<module>consumer/mongodb-consumer</module>
 		<module>consumer/rabbit-consumer</module>
 
+		<module>function/bridge-function</module>
 		<module>function/filter-function</module>
 		<module>function/payload-converter-function</module>
 		<module>function/spel-function</module>

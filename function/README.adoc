@@ -5,6 +5,14 @@ The functions can be run as part of standalone Spring Boot applications.
 
 === Available Functions
 
+`bridge-function`
+
+Function that implements the bridge pattern. The output of this function is same as the input.
+
+`filter-function`
+
+Filter an incoming message based on a boolean SpEL expression and produces that message or nothing according expression result.
+
 `splitter-function`
 
 This is a "one-to-many" Java function with a signature as `Function<Message<?>, List<Message<?>>>`. So, every inbound message is splitted into several output messages.
@@ -15,10 +23,7 @@ Also if one of the `fileMarkers` or `charset` properties is present, the `FileSp
 
 Transform incoming message payload based on a SpEL expression and produces an outbound message.
 
-`filter-function`
-
-Filter an incoming message based on a boolean SpEL expression and produces that message or nothing according expression result.
-
+>>>>>>> 53870f4... foo
 `tasklauncher-function`
 
 This is Java function with signature `Function<LaunchRequest, Optional<Long>` that submits a task launch request against a Spring Cloud Data Flow server.
