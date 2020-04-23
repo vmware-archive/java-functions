@@ -18,10 +18,17 @@ package io.pivotal.java.function.file.consumer;
 
 import java.io.File;
 import java.io.FileReader;
+import java.nio.file.Path;
+import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.integration.support.MessageBuilder;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.messaging.Message;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,12 +37,21 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Mark Fisher
  * @author Artem Bilan
  * @author Soby Chacko
+ *
+ * We don't need a separate SpringBootApplication for this test as there is already one available in this package.
+ * {@link AbstractFileConsumerTests}.
  */
-@TestPropertySource(properties = {"file.consumer.nameExpression = payload.substring(0, 4)",
+@SpringBootTest(properties = {"file.consumer.nameExpression = payload.substring(0, 4)",
 		"file.consumer.directoryExpression = '${java.io.tmpdir}'+headers.dir",
-		"file.consumer.suffix=out",
-		"file.consumer.directory=${java.io.tmpdir}/file-consumer"})
-public class ExpressionTests extends AbstractFileConsumerTests {
+		"file.consumer.suffix=out"})
+@DirtiesContext
+public class ExpressionTests {
+
+	@TempDir
+	static Path tempDir;
+
+	@Autowired
+	Consumer<Message<?>> fileConsumer;
 
 	@Test
 	public void test() throws Exception {
