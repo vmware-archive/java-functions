@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * {@link AbstractFileConsumerTests}.
  */
 @SpringBootTest(properties = {"file.consumer.nameExpression = payload.substring(0, 4)",
-		"file.consumer.directoryExpression = '${java.io.tmpdir}'+headers.dir",
+		"file.consumer.directoryExpression = '${java.io.tmpdir}'+'/'+headers.dir",
 		"file.consumer.suffix=out"})
 @DirtiesContext
 public class ExpressionTests {
