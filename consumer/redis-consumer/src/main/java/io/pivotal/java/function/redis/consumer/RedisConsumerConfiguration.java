@@ -28,6 +28,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.common.LiteralExpression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.redis.outbound.RedisPublishingMessageHandler;
 import org.springframework.integration.redis.outbound.RedisQueueOutboundChannelAdapter;
 import org.springframework.integration.redis.outbound.RedisStoreWritingMessageHandler;
@@ -37,6 +40,8 @@ import org.springframework.messaging.MessageHandler;
 @Configuration
 @EnableConfigurationProperties(RedisConsumerProperties.class)
 public class RedisConsumerConfiguration {
+
+	private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
 
 	@Bean
 	public Consumer<Message<?>> redisConsumer(MessageHandler redisConsumerMessageHandler) {
@@ -49,7 +54,8 @@ public class RedisConsumerConfiguration {
 		if (redisConsumerProperties.isKeyPresent()) {
 			RedisStoreWritingMessageHandler redisStoreWritingMessageHandler = new RedisStoreWritingMessageHandler(
 					redisConnectionFactory);
-			redisStoreWritingMessageHandler.setKeyExpression(redisConsumerProperties.keyExpression());
+			redisStoreWritingMessageHandler.setKeyExpression(
+					new LiteralExpression(redisConsumerProperties.keyExpression()));
 			return redisStoreWritingMessageHandler;
 		}
 		else if (redisConsumerProperties.isQueuePresent()) {
@@ -59,7 +65,8 @@ public class RedisConsumerConfiguration {
 		else { // must be topic
 			RedisPublishingMessageHandler redisPublishingMessageHandler = new RedisPublishingMessageHandler(
 					redisConnectionFactory);
-			redisPublishingMessageHandler.setTopicExpression(redisConsumerProperties.topicExpression());
+			redisPublishingMessageHandler.setTopicExpression(
+					EXPRESSION_PARSER.parseExpression(redisConsumerProperties.topicExpression()));
 			return redisPublishingMessageHandler;
 		}
 	}

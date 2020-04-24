@@ -21,7 +21,6 @@ import java.util.Collections;
 import javax.validation.constraints.AssertTrue;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -41,17 +40,17 @@ public class RedisConsumerProperties {
 	/**
 	 * A SpEL expression to use for topic.
 	 */
-	private Expression topicExpression;
+	private String topicExpression;
 
 	/**
 	 * A SpEL expression to use for queue.
 	 */
-	private Expression queueExpression;
+	private String queueExpression;
 
 	/**
 	 * A SpEL expression to use for storing to a key.
 	 */
-	private Expression keyExpression;
+	private String keyExpression;
 
 	/**
 	 * A literal key name to use when storing to a key.
@@ -80,27 +79,27 @@ public class RedisConsumerProperties {
 		this.topic = topic;
 	}
 
-	public Expression keyExpression() {
-		return key != null ? new LiteralExpression(key) : keyExpression;
+	public String keyExpression() {
+		return key != null ? new LiteralExpression(key).getExpressionString() : keyExpression;
 	}
 
-	public void setKeyExpression(Expression keyExpression) {
+	public void setKeyExpression(String keyExpression) {
 		this.keyExpression = keyExpression;
 	}
 
-	public Expression queueExpression() {
-		return queue != null ? new LiteralExpression(queue) : queueExpression;
+	public String queueExpression() {
+		return queue != null ? new LiteralExpression(queue).getExpressionString() : queueExpression;
 	}
 
-	public void setQueueExpression(Expression queueExpression) {
+	public void setQueueExpression(String queueExpression) {
 		this.queueExpression = queueExpression;
 	}
 
-	public Expression topicExpression() {
-		return topic != null ? new LiteralExpression(topic) : topicExpression;
+	public String topicExpression() {
+		return topic != null ? new LiteralExpression(topic).getExpressionString() : topicExpression;
 	}
 
-	public void setTopicExpression(Expression topicExpression) {
+	public void setTopicExpression(String topicExpression) {
 		this.topicExpression = topicExpression;
 	}
 
@@ -116,15 +115,15 @@ public class RedisConsumerProperties {
 		return StringUtils.hasText(topic) || topicExpression != null;
 	}
 
-	public Expression getTopicExpression() {
+	public String getTopicExpression() {
 		return topicExpression;
 	}
 
-	public Expression getQueueExpression() {
+	public String getQueueExpression() {
 		return queueExpression;
 	}
 
-	public Expression getKeyExpression() {
+	public String getKeyExpression() {
 		return keyExpression;
 	}
 

@@ -31,7 +31,6 @@ import org.springframework.data.redis.support.collections.RedisList;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
-import org.testcontainers.containers.GenericContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,18 +40,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Gary Russell
  * @author Soby Chacko
  */
-@SpringBootTest(properties = "redis.consumer.key=foo")
+@SpringBootTest(properties = {"spring.redis.host=${embedded.redis.host}",
+							"spring.redis.port=${embedded.redis.port}",
+							"spring.redis.user=${embedded.redis.user}",
+							"spring.redis.password=${embedded.redis.password}",
+							"redis.consumer.key=foo"})
 @DirtiesContext
 public class RedisConsumerTests {
-
-	static {
-		GenericContainer redis = new GenericContainer("redis:3-alpine")
-				.withExposedPorts(6379);
-		redis.start();
-
-		System.setProperty("spring.redis.host", redis.getContainerIpAddress());
-		System.setProperty("spring.redis.port", redis.getFirstMappedPort() + "");
-	}
 
 	@Autowired
 	Consumer<Message<?>> redisConsumer;
