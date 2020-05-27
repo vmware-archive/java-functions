@@ -40,6 +40,7 @@
 		<module>supplier/jdbc-supplier</module>
 		<module>supplier/mongodb-supplier</module>
 		<module>supplier/time-supplier</module>
+		<module>supplier/rabbit-supplier</module>
 
 		<module>spring-functions-parent</module>
 	</modules>
