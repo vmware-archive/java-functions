@@ -37,3 +37,7 @@ NOTE: A respective JDBC driver has to be added into classpath to make this consu
 `file-consumer`
 
 A `Consumer` that accepts incoming messages and write them into a target file in a directory.
+
+`redis-consumer`
+
+A `Consumer` that sends incoming messages to Redis.
